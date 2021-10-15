@@ -1,4 +1,4 @@
-package com.example.global
+package com.autaccaud.app
 
 import io.flutter.embedding.android.FlutterActivity
 
