@@ -81,12 +81,12 @@ class SplashScreen extends StatelessWidget {
             //         fontSize: 20.0,
             //         fontWeight: FontWeight.w500)),
             Spacer(), Spacer(),
-            CustomWidgets.getActionButton('SignIn', 40.0, 20.0, () {
+            CustomWidgets.getActionButton('SignIn',  20.0, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LogInScreen()));
             }),
             SizedBox(height: 30.0),
-            CustomWidgets.getActionButton('SignUp', 40.0, 20.0, () {
+            CustomWidgets.getActionButton('SignUp',  20.0, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),

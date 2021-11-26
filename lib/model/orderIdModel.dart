@@ -1,6 +1,6 @@
 class OrderIdModel {
   String? orderCurrency;
-  int? orderAmount;
+  double? orderAmount;
   String? orderId;
   String? leadId;
   String? clientSecret;

@@ -47,10 +47,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ServicesModel(id: 4, name: "ROC Returns"),
     ServicesModel(id: 5, name: "Registrations"),
     ServicesModel(id: 6, name: "Loans"),
-    ServicesModel(id: 6, name: "Tally Book Keeping"),
-    ServicesModel(id: 7, name: "Cibil"),
-    ServicesModel(id: 6, name: "Insurance"),
-    ServicesModel(id: 6, name: "Investments")
+    ServicesModel(id: 7, name: "Tally Book Keeping"),
+    ServicesModel(id: 8, name: "Cibil"),
+    ServicesModel(id: 9, name: "Insurance"),
+    ServicesModel(id: 10, name: "Investments")
   ];
   final _items = _servicesList
       .map((service) => MultiSelectItem<ServicesModel?>(service, service.name!))
@@ -278,6 +278,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                       validateWith: Validator.panCardNumberValidator,
                       hint: 'Enter pancard number',
+                      textCapitalization: TextCapitalization.characters,
+                      formatters: [UpperCaseTextFormatter()],
                       maxCount: 10,
                       maxLines: 1,
                       readonly: false,
@@ -350,7 +352,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CustomWidgets.getActionButton('Register', 40.0, 20.0,
+                        CustomWidgets.getActionButton('Register', 20.0,
                             () {
                           if (_formKey.currentState!.validate()) {
                             if (value) {
@@ -367,7 +369,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 msg: "Please fill all the fields");
                           }
                         }),
-                        CustomWidgets.getActionButton('Cancel', 40.0, 20.0, () {
+                        CustomWidgets.getActionButton('Cancel', 20.0, () {
                           Navigator.pop(context);
                         })
                       ]),

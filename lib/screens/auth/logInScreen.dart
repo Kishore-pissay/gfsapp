@@ -100,74 +100,80 @@ class _LogInScreenState extends State<LogInScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
-        body: SingleChildScrollView(
-          child: Container(
-            height: size.height,
-            width: size.width,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg1.jpg'))),
-            padding: const EdgeInsets.all(20.0),
-            child: Form(
-              key: _logInFormKey,
-              child: Column(
-                children: [
-                  SizedBox(height: size.height * 0.1),
-                  Text('Login Page',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(height: 20.0),
-                  Text('Please fill the details to login',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(height: size.height * 0.1),
-                  CustomTextField(
-                      validateWith: Validator.emailValidator,
-                      hint: 'Enter your email',
-                      readonly: false,
-                      controller: _emailController),
-                  CustomTextField(
-                      validateWith: Validator.passWordValidator,
-                      hint: 'Enter password',
-                      readonly: false,
-                      controller: _passwordController),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      child: Text('Forgot Password ?'),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotEmailScreen()));
-                      },
-                    ),
+        body: Stack(
+          children: [
+            Container(
+              height: size.height,
+              width: size.width,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/images/bg3.jpeg'))),
+            ),
+            SingleChildScrollView(
+              child: Form(
+                key: _logInFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: size.height * 0.1),
+                      Text('Login Page',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w500)),
+                      SizedBox(height: 20.0),
+                      Text('Please fill the details to login',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500)),
+                      SizedBox(height: size.height * 0.1),
+                      CustomTextField(
+                          validateWith: Validator.emailValidator,
+                          hint: 'Enter your email',
+                          readonly: false,
+                          controller: _emailController),
+                      CustomTextField(
+                          validateWith: Validator.passWordValidator,
+                          hint: 'Enter password',
+                          readonly: false,
+                          controller: _passwordController),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          child: Text('Forgot Password ?'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForgotEmailScreen()));
+                          },
+                        ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomWidgets.getActionButton('Login', 20.0, () {
+                              if (FocusScope.of(context).hasFocus)
+                                FocusScope.of(context).unfocus();
+                              if (_logInFormKey.currentState!.validate()) {
+                                login();
+                              } else {}
+                            }),
+                            CustomWidgets.getActionButton('Cancel', 20.0, () {
+                              Navigator.pop(context);
+                            })
+                          ]),
+                    ],
                   ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomWidgets.getActionButton('Login', 40.0, 20.0, () {
-                          if (FocusScope.of(context).hasFocus)
-                            FocusScope.of(context).unfocus();
-                          if (_logInFormKey.currentState!.validate()) {
-                            login();
-                          } else {}
-                        }),
-                        CustomWidgets.getActionButton('Cancel', 40.0, 20.0, () {
-                          Navigator.pop(context);
-                        })
-                      ]),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ));
   }
 }
@@ -182,8 +188,21 @@ class StorageValues {
   static String pan = "pan";
   static String aadhar = "aadhar";
   static String kyc = "KYC";
-  static String loanProposalsA = "loanProposals";
-  static String loanProposalsCA = "loanProposals-Co-Applicant";
+  static String loanProposalsA = "HomeloanProposals-Applicant";
+  static String loanProposalsCA = "HomeloanProposals-Co-Applicant";
+  static String eduLoanProposals = "eduLoanProposals-Applicant";
+  static String autoLoanProposals = "automobileLoanProposales-Applicant";
+  static String mudraLoanProposals = 'mudraLoanProposals-Applicant';
+  static String personalLoanProposals = 'personalLaonProposals-Applicant';
+  static String msmeLoanProposals = 'msmeLaonProposals-Applicant';
+  static String gstFreshRegBusiness = 'GstFreshRegistration-Business';
+  static String gstFreshRegFirm = 'GstFreshRegistration-PartnershipFirm';
+  static String gstFreshRegCompany = 'GstFreshRegistration-PvtLtdCompany';
+  static String udyamiRegBusiness = 'UdyamiRegistration-Business';
+  static String udyamiRegFirm = 'UdyamiRegistration-PartnershipFirm';
+  static String udyamiRegCompany = 'UdyamiRegistration-PvtLtdCompany';
+  static String partFirmReg = 'PartnershipFirmRegistration';
+  static String pvtLtdCompReg = 'PrivateLimitedCompanyRegistration';
   static String pfStatementA = "pfStatement-Applicant";
   static String pfStatementCA = "pfStatement-Co-Applicant";
   static String itra = "ITR-Applicant";
@@ -194,4 +213,8 @@ class StorageValues {
   static String electricityBill = "ElectricityBill";
   static String gasBill = "GasBill";
   static String insuranceDoc = "InsuranceDocument";
+  static String homeLoan25to75 = "25 lakhs to 75 lakhs";
+  static String homeLoan75to150 = "75 lakhs to 150 lakhs";
+  static String msmeLoan10to100 = "10 lakhs to 100 lakhs";
+  static String msmeLoan100to500 = "100 lakhs to 500 lakhs";
 }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customTextField.dart';
@@ -82,13 +81,14 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomWidgets.getAppBar(),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Container(
           height: size.height,
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/bg1.jpg'))),
+                  image: AssetImage('assets/images/bg3.jpeg'))),
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
@@ -111,7 +111,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
               ),
               SizedBox(height: size.height * 0.05),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                CustomWidgets.getActionButton('Reset', 40.0, 20.0, () {
+                CustomWidgets.getActionButton('Reset', 20.0, () {
                   if (FocusScope.of(context).hasFocus)
                     FocusScope.of(context).unfocus();
                   if (_resetFormKey.currentState!.validate()) {
@@ -120,7 +120,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
                     print("fill the field");
                   }
                 }),
-                CustomWidgets.getActionButton('Cancel', 40.0, 20.0, () {
+                CustomWidgets.getActionButton('Cancel', 20.0, () {
                   Navigator.pop(context);
                 })
               ]),

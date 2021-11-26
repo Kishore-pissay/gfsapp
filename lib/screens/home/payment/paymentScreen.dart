@@ -9,7 +9,10 @@ import 'package:global/screens/auth/logInScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({Key? key}) : super(key: key);
+  final String type;
+  final String payfor;
+  const PaymentScreen({Key? key, required this.type, required this.payfor})
+      : super(key: key);
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
@@ -17,6 +20,7 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   var initialize;
+  //var paytype = widget.type;
   String orderId = "ORDER_ID";
   String stage = "PROD";
   String orderAmount = "ORDER_AMOUNT";
@@ -37,7 +41,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
     Dio dio = Dio();
     final response = await dio.post(
       "$instanceUrl/services/apexrest/fluttercashfree/generateCashFreeToken",
-      data: {"leadid": prefs.getString(StorageValues.leadId)},
+      data: {
+        "leadId": prefs.getString(StorageValues.leadId),
+        //"leadId": '00Q5g000008L43CEAS',
+        "paymenttype": widget.type
+      },
       options: Options(
           followRedirects: false,
           validateStatus: (status) => true,
@@ -46,6 +54,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
           }),
     );
+    print(response.statusCode);
+    //debugPrint(response.data);
     if (response.statusCode == 200) {
       final result = jsonDecode(response.data);
       List<OrderIdModel> paymentDetails = [];
@@ -75,6 +85,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       }
     } else {
       print(response.statusCode);
+
       debugPrint("Auth Failed");
       return null;
     }
@@ -85,7 +96,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       "orderId": orderId,
       "orderAmount": orderAmount,
       "customerName": customerName,
-      "orderNote": 'GST Returns',
+      "orderNote": widget.type,
       "orderCurrency": orderCurrency,
       "appId": appId,
       "customerPhone": customerPhone,
@@ -112,19 +123,56 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
-        body: FutureBuilder(
-          future: initialize,
-          builder: (ctx, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snap.hasData) {
-              return Center(
-                  child: CustomWidgets.getActionButton(
-                      'Payment', 40.0, 20.0, () => initiatePayment()));
-            } else {
-              return Center(child: Text("Please try again"));
-            }
-          },
+        body: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                Text('Payment Screen',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                SizedBox(width: 50)
+              ],
+            ),
+            //SizedBox(height: 50),
+            Text('Please proceed with the payment.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            SizedBox(height: 60),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                  'On click of "Payment button" you shall initiate the payment for ' +
+                      widget.payfor +
+                      ' service.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            ),
+            SizedBox(height: 50),
+            FutureBuilder(
+              future: initialize,
+              builder: (ctx, snap) {
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snap.hasData) {
+                  return Center(
+                      child: CustomWidgets.getActionButton(
+                          'Payment', 20.0, () => initiatePayment()));
+                } else {
+                  return Center(child: Text("Please try again"));
+                }
+              },
+            ),
+            SizedBox(height: 30),
+            CustomWidgets.getActionButton('Cancel', 20.0, () {
+              Navigator.pop(context);
+            }),
+          ],
         ));
   }
 }

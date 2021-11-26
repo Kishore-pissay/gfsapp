@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomWidgets.getActionButton('Confirm', 10.0, 16.0,
+                    CustomWidgets.getActionButton('Confirm', 16.0,
                         () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                           MaterialPageRoute(builder: (context) => Splash()),
                           (route) => false);
                     }),
-                    CustomWidgets.getActionButton('Cancel', 10.0, 16.0, () {
+                    CustomWidgets.getActionButton('Cancel', 16.0, () {
                       Navigator.pop(context);
                     })
                   ],

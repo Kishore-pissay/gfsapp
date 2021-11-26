@@ -55,13 +55,14 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
-        body: SingleChildScrollView(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Container(
             height: size.height,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg1.jpg'))),
+                    image: AssetImage('assets/images/bg3.jpeg'))),
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
@@ -151,12 +152,12 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CustomWidgets.getActionButton('Confirm', 40.0, 20.0, () {
+                      CustomWidgets.getActionButton('Confirm', 20.0, () {
                         if (_otpController.text.length == 5) {
                           verifyOtp();
                         }
                       }),
-                      CustomWidgets.getActionButton('Cancel', 40.0, 20.0, () {
+                      CustomWidgets.getActionButton('Cancel', 20.0, () {
                         Navigator.pop(context);
                       })
                     ])

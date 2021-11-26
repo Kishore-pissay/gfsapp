@@ -224,7 +224,7 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
                   color: Colors.black,
                   fontSize: 16.0,
                   fontWeight: FontWeight.w400)),
-          SizedBox(height: 20.0),
+          SizedBox(height: 50.0),
           // Padding(
           //   padding: const EdgeInsets.all(20.0),
           //   child: Align(
@@ -304,7 +304,7 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 12.0,
+                                            fontSize: 15.0,
                                             fontWeight: FontWeight.w400))
                                   ]),
                             ),
@@ -335,7 +335,7 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 12.0,
+                                            fontSize: 15.0,
                                             fontWeight: FontWeight.w400))
                                   ]),
                             ),
@@ -382,7 +382,8 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PaymentScreen()));
+                                      builder: (context) =>
+                                          PaymentScreen(type: 'GST', payfor: 'GST Returns Filing')));
                             },
                             child: Container(
                                 alignment: Alignment.center,

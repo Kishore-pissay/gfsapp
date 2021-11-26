@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
 import 'package:global/my_flutter_app_icons.dart';
 import 'package:global/screens/home/ewalletScreen.dart';
+import 'package:global/screens/home/finAdv.dart';
 import 'package:global/screens/home/gstFilingScreen.dart';
+import 'package:global/screens/home/itr.dart';
 
 class ServiceScreen extends StatefulWidget {
   const ServiceScreen({Key? key}) : super(key: key);
@@ -96,8 +98,32 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => GSTFilingScreen()));
-                      } else if (index == 4) {
+                      } else if (index == 1) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ItrFiling()));
+                      } //else if (index == 2) {
+                      ////tds returns
+                      //Navigator.push(
+                      //    context,
+                      //    MaterialPageRoute(
+                      //        builder: (context) => GSTFilingScreen()));
+                      //} //else if (index == 3) {
+                      ////Roc returns
+                      //Navigator.push(
+                      //    context,
+                      //    MaterialPageRoute(
+                      //        builder: (context) => GSTFilingScreen()));
+                      //}
+                      else if (index == 4) {
                         CustomWidgets.showLoansPopup(context, size);
+                      } else if (index == 5) {
+                        CustomWidgets.showRegistrationsPopup(context, size);
+                      } else if (index == 6) {
+                        //Fnancial advisor
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => FinAdv()));
                       } else if (index == 9) {
                         Navigator.push(
                             context,
