@@ -7,13 +7,14 @@ import 'package:global/Shared/customTextField.dart';
 import 'package:global/Shared/customWidgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../splashScreen.dart';
 import 'forgotEmailScreen.dart';
 import 'logInScreen.dart';
 
 class ForgotOTPScreen extends StatefulWidget {
-  final String email;
-  const ForgotOTPScreen({Key? key, required this.email}) : super(key: key);
+  final String? email;
+  const ForgotOTPScreen({Key? key, this.email}) : super(key: key);
 
   @override
   _ForgotOTPScreenState createState() => _ForgotOTPScreenState();
@@ -73,6 +74,16 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
   //     return null;
   //   }
   // }
+
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
 
   Future<void> updatePassword() async {
     EasyLoading.show(
@@ -161,120 +172,130 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
                     fit: BoxFit.cover,
                     image: AssetImage('assets/images/bg3.jpeg'))),
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.1),
-                Text('OTP Screen',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.w500)),
-                SizedBox(height: 20.0),
-                Text('Please enter your otp sent to ${widget.email}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500)),
-                SizedBox(height: size.height * 0.1),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 30),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      // pastedTextStyle: TextStyle(
-                      //   color: Colors.green.shade600,
-                      //   fontWeight: FontWeight.bold,
-                      // ),
-                      length: 5,
-                      obscureText: false,
-                      obscuringCharacter: '*',
-                      // obscuringWidget: FlutterLogo(
-                      //   size: 24,
-                      // ),
-                      blinkWhenObscuring: true,
-                      animationType: AnimationType.fade,
-                      validator: (v) {
-                        if (v!.length < 3) {
-                          return "I'm from validator";
-                        } else {
-                          return null;
-                        }
-                      },
-                      // pinTheme: PinTheme(
-                      //   shape: PinCodeFieldShape.box,
-                      //   borderRadius: BorderRadius.circular(5),
-                      //   fieldHeight: 50,
-                      //   fieldWidth: 40,
-                      //   activeFillColor: Colors.white,
-                      // ),
-                      cursorColor: Colors.black,
-                      animationDuration: Duration(milliseconds: 300),
-                      enableActiveFill: true,
-                      // errorAnimationController: errorController,
-                      controller: _otpController,
-                      keyboardType: TextInputType.number,
-                      boxShadows: [
-                        BoxShadow(
-                          offset: Offset(0, 1),
-                          color: Colors.black12,
-                          blurRadius: 10,
-                        )
-                      ],
-                      onCompleted: (v) {
-                        print("Completed");
-                      },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
-                      onChanged: (value) {
-                        print(value);
-                        // setState(() {
-                        //   currentText = value;
-                        // });
-                      },
-                      beforeTextPaste: (text) {
-                        print("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                        return true;
-                      },
-                    )),
-                if (_otpController.text.length == 5)
+            child: Padding(
+              padding: getPadding(size),
+              child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.1),
+                  Text('OTP Screen',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w500)),
+                  SizedBox(height: 20.0),
+                  Text('Please enter your otp sent to ${widget.email}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500)),
+                  SizedBox(height: size.height * 0.1),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 30),
+                      child: PinCodeTextField(
+                        appContext: context,
+                        // pastedTextStyle: TextStyle(
+                        //   color: Colors.green.shade600,
+                        //   fontWeight: FontWeight.bold,
+                        // ),
+                        length: 5,
+                        obscureText: false,
+                        obscuringCharacter: '*',
+                        // obscuringWidget: FlutterLogo(
+                        //   size: 24,
+                        // ),
+                        blinkWhenObscuring: true,
+                        animationType: AnimationType.fade,
+                        validator: (v) {
+                          if (v!.length < 3) {
+                            return "I'm from validator";
+                          } else {
+                            return null;
+                          }
+                        },
+                        // pinTheme: PinTheme(
+                        //   shape: PinCodeFieldShape.box,
+                        //   borderRadius: BorderRadius.circular(5),
+                        //   fieldHeight: 50,
+                        //   fieldWidth: 40,
+                        //   activeFillColor: Colors.white,
+                        // ),
+                        cursorColor: Colors.black,
+                        animationDuration: Duration(milliseconds: 300),
+                        enableActiveFill: true,
+                        // errorAnimationController: errorController,
+                        controller: _otpController,
+                        keyboardType: TextInputType.number,
+                        boxShadows: [
+                          BoxShadow(
+                            offset: Offset(0, 1),
+                            color: Colors.black12,
+                            blurRadius: 10,
+                          )
+                        ],
+                        onCompleted: (v) {
+                          print("Completed");
+                        },
+                        // onTap: () {
+                        //   print("Pressed");
+                        // },
+                        onChanged: (value) {
+                          print(value);
+                          // setState(() {
+                          //   currentText = value;
+                          // });
+                        },
+                        beforeTextPaste: (text) {
+                          print("Allowing to paste $text");
+                          //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                          //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                          return true;
+                        },
+                      )),
+                  // if (_otpController.text.length == 5)
                   Column(
                     children: [
                       PasswordField(
-                          //label: "Select Password",
-                          validateWith: Validator.passWordValidator,
-                          // hint: 'Enter password',
-                          // readonly: false,
-                          controller: _pController),
+                        //label: "Select Password",
+                        validateWith: Validator.passWordValidator,
+                        hintText: 'Enter password',
+                        // readonly: false,
+                        controller: _pController,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: PasswordField(
-                            validateWith: Validator.passWordValidator,
-                            //label: 'Confirm password',
-                            // hint: 'Confirm password',
-                            // readonly: false,
-                            controller: _cpController),
+                          validateWith: Validator.passWordValidator,
+                          hintText: 'Confirm password',
+                          //label: 'Confirm password',
+                          // hint: 'Confirm password',
+                          // readonly: false,
+                          controller: _cpController,
+                        ),
                       ),
                     ],
                   ),
-                if (_cpController.text.length > 0 &&
-                    _pController.text == _cpController.text)
+
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CustomWidgets.getActionButton('Confirm', 20.0,
-                            () {
-                          updatePassword();
+                        CustomWidgets.getActionButton('Confirm', 20.0, () {
+                          if ((_cpController.text.length > 0 &&
+                              _pController.text == _cpController.text)) {
+                            updatePassword();
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: 'Password is not matching');
+                          }
                         }),
                         CustomWidgets.getActionButton('Cancel', 20.0, () {
                           Navigator.pop(context);
                         })
                       ])
-              ],
+                ],
+              ),
             ),
           ),
         ));

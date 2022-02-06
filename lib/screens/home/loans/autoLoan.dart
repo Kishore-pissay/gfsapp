@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
@@ -8,7 +9,7 @@ import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -36,7 +37,7 @@ class _AutoLoanState extends State<AutoLoan> {
         child: SizedBox(
           width: size.width,
           child: Column(
-            children: <Widget>[
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -60,187 +61,213 @@ class _AutoLoanState extends State<AutoLoan> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
-              AutoLoanDocumentUploadWidget(
-                  name: 'Aadhar Card', filename: StorageValues.kyc),
-              AutoLoanDocumentUploadWidget(
-                  name: 'Pan Card', filename: StorageValues.kyc),
-              AutoLoanDocumentUploadWidget(
-                  name: 'Passport size Photo',
-                  filename: StorageValues.autoLoanProposals),
-              AutoLoanDocumentUploadWidget(
-                  name: 'Proforma Invoice',
-                  filename: StorageValues.autoLoanProposals),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      width: size.width / 2 - 20.0,
-                      child: Row(children: [
-                        Radio<SelectIDType>(
-                          value: SelectIDType.salaryBased,
-                          groupValue: _character,
-                          onChanged: (SelectIDType? value) {
-                            setState(() {
-                              _character = value;
-                              print(_character);
-                            });
-                          },
-                        ),
-                        const Text('Salary based'),
-                      ])),
-                  Container(
-                    width: size.width / 2 - 20.0,
-                    child: Row(
-                      children: [
-                        Radio<SelectIDType>(
-                          value: SelectIDType.selfEmployed,
-                          groupValue: _character,
-                          onChanged: (SelectIDType? value) {
-                            setState(() {
-                              _character = value;
-                            });
-                          },
-                        ),
-                        const Text('Self Employed'),
+              Padding(
+                padding: CustomWidgets.getPadding(size),
+                child: Column(
+                  children: <Widget>[
+                    AutoLoanDocumentUploadWidget(
+                        name: 'Aadhar Card', filename: StorageValues.kyc),
+                    AutoLoanDocumentUploadWidget(
+                        name: 'Pan Card', filename: StorageValues.kyc),
+                    AutoLoanDocumentUploadWidget(
+                        name: 'Passport size Photo',
+                        filename: StorageValues.autoLoanProposals),
+                    AutoLoanDocumentUploadWidget(
+                        name: 'Proforma Invoice',
+                        filename: StorageValues.autoLoanProposals),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                            // width: size.width / 2 - 20.0,
+                            child: Row(children: [
+                          Radio<SelectIDType>(
+                            value: SelectIDType.salaryBased,
+                            groupValue: _character,
+                            onChanged: (SelectIDType? value) {
+                              setState(() {
+                                _character = value;
+                                print(_character);
+                              });
+                            },
+                          ),
+                          const Text('Salary based'),
+                        ])),
+                        Expanded(
+                          // width: size.width / 2 - 20.0,
+                          child: Row(
+                            children: [
+                              Radio<SelectIDType>(
+                                value: SelectIDType.selfEmployed,
+                                groupValue: _character,
+                                onChanged: (SelectIDType? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
+                              const Text('Self Employed'),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
+                    _character == SelectIDType.salaryBased
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Latest 2 months salary slips',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.salaryBased)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Latest Form 16',
+                                  filename: StorageValues.itra,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.salaryBased)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Latest 3 months bank statments',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.salaryBased)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Sign Verification Proof',
+                                  info: 'PAN / Passport/ Bankers Verification',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.salaryBased)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Employement Continuity Proof',
+                                  info:
+                                      'Copy of Appointment Letter/ Work Experience Certificate/ Relieving letter',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.salaryBased)),
+                              SizedBox(height: 20.0),
+                            ],
+                          )
+                        //SizedBox(height: 20.0),
+                        : Column(
+                            children: [
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Business Proof',
+                                  info:
+                                      'Telephone Bill/ Electricity Bill/ Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Statement/ Regd Lease with other Utility Bills',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.selfEmployed)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Latest ITR',
+                                  filename: StorageValues.itra,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.selfEmployed)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Latest 3 months bank statments',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.selfEmployed)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Sign Verification Proof',
+                                  info: 'PAN / Passport/ Bankers Verification',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.selfEmployed)),
+                              AutoLoanDocumentUploadWidget(
+                                  name: 'Business Continuity Proof',
+                                  info:
+                                      'Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Statement',
+                                  filename: StorageValues.autoLoanProposals,
+                                  selectedprofession:
+                                      EnumToString.convertToString(
+                                          SelectIDType.selfEmployed)),
+                              SizedBox(height: 20.0),
+                            ],
+                          ),
+                    SizedBox(height: 30),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          //CustomWidgets.getActionButton(
+                          //    'Proceed to Pay', 30.0, 15.0, () {}),
+                          //CustomWidgets.getActionButton(
+                          //    'Cancel', 30.0, 15.0, () {
+                          //  Navigator.pop(context);
+                          //}),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                          type: 'AutoLoan',
+                                          payfor: 'Automobile Loan')));
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // width: size.width / 2,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: Color(0xffef661a),
+                                      width: 1.0,
+                                    ),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(children: [
+                                  Text('Subscribe',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ])),
+                          )
+                        ]),
+                    SizedBox(height: 20),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // width: size.width / 2,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: Color(0xffef661a),
+                                      width: 1.0,
+                                    ),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(children: [
+                                  Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ])),
+                          )
+                        ]),
+                    SizedBox(height: 50),
+                  ],
+                ),
               ),
-              _character == SelectIDType.salaryBased
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Latest 2 months salary slips',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.salaryBased)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Latest Form 16',
-                            filename: StorageValues.itra,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.salaryBased)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Latest 3 months bank statments',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.salaryBased)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Sign Verification Proof',
-                            info: 'PAN / Passport/ Bankers Verification',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.salaryBased)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Employement Continuity Proof',
-                            info:
-                                'Copy of Appointment Letter/ Work Experience Certificate/ Relieving letter',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.salaryBased)),
-                        SizedBox(height: 20.0),
-                      ],
-                    )
-                  //SizedBox(height: 20.0),
-                  : Column(
-                      children: [
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Business Proof',
-                            info:
-                                'Telephone Bill/ Electricity Bill/ Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Statement/ Regd Lease with other Utility Bills',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.selfEmployed)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Latest ITR',
-                            filename: StorageValues.itra,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.selfEmployed)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Latest 3 months bank statments',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.selfEmployed)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Sign Verification Proof',
-                            info: 'PAN / Passport/ Bankers Verification',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.selfEmployed)),
-                        AutoLoanDocumentUploadWidget(
-                            name: 'Business Continuity Proof',
-                            info:
-                                'Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Statement',
-                            filename: StorageValues.autoLoanProposals,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.selfEmployed)),
-                        SizedBox(height: 20.0),
-                      ],
-                    ),
-              SizedBox(height: 30),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                //CustomWidgets.getActionButton(
-                //    'Proceed to Pay', 30.0, 15.0, () {}),
-                //CustomWidgets.getActionButton(
-                //    'Cancel', 30.0, 15.0, () {
-                //  Navigator.pop(context);
-                //}),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentScreen(
-                                type: 'AutoLoan', payfor: 'Automobile Loan')));
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Color(0xffef661a),
-                            width: 1.0,
-                          ),
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(0.2)),
-                      child: Column(children: [
-                        Text('Subscribe',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ])),
-                )
-              ]),
-              SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Color(0xffef661a),
-                            width: 1.0,
-                          ),
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(0.2)),
-                      child: Column(children: [
-                        Text('Cancel',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ])),
-                )
-              ]),
-              SizedBox(height: 50),
             ],
           ),
         ),
@@ -279,12 +306,12 @@ class _AutoLoanDocumentUploadWidgetState
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+          Uint8List b = Uint8List(bytes.toString().length);
+          img64 = Base64Encoder().convert(b);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -418,7 +445,7 @@ class _AutoLoanDocumentUploadWidgetState
           width: 10,
         ), //SizedBox
         SizedBox(
-          width: size.width / 2,
+          // width: size.width / 2,
           child: Text(
             '${widget.name}',
             style: TextStyle(fontSize: 17.0),
@@ -434,7 +461,7 @@ class _AutoLoanDocumentUploadWidgetState
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

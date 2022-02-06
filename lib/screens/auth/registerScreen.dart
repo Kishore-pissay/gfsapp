@@ -137,6 +137,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
+
   void selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -166,240 +176,256 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
-        body: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Text('Welcome on board',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(height: 20.0),
-                  Text('Please fill in all the details to register',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(height: 20.0),
-                  CustomTextField(
-                      validateWith: Validator.nameValidator,
-                      hint: 'Enter full name',
-                      readonly: false,
-                      controller: _nameController),
-                  CustomTextField(
-                      maxCount: 10,
-                      maxLines: 1,
-                      validateWith: Validator.phoneValidator,
-                      formatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.phone,
-                      hint: 'Enter mobile number',
-                      readonly: false,
-                      controller: _phoneNumberController),
-                  CustomTextField(
-                      validateWith: Validator.emailValidator,
-                      hint: 'Enter email id',
-                      readonly: false,
-                      controller: _emailController),
-                  CustomTextField(
-                      validateWith: Validator.nameValidator,
-                      onTap: () {
-                        selectDate(context);
-                      },
-                      hint: 'Enter date of birth',
-                      readonly: true,
-                      controller: _dobController),
-                  PasswordField(
-                      validateWith: Validator.passWordValidator,
-                      controller: _passwordController),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: PasswordField(
-                        validateWith: Validator.passWordValidator,
-                        controller: _cpasswordController),
-                  ),
-                  CustomTextField(
-                      validateWith: Validator.addressValidator,
-                      maxLines: 5,
-                      hint: 'Full Address',
-                      readonly: false,
-                      controller: _addressController),
-                  CustomTextField(
-                      validateWith: Validator.cityValidator,
-                      hint: 'Enter city',
-                      readonly: false,
-                      controller: _cityController),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Container(
+              height: size.height,
+              width: size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage('assets/images/wbacground.jpg'),
+                ),
+              ),
+            ),
+            Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: getPadding(size),
+                  child: Column(
                     children: [
-                      SizedBox(
-                        width: size.width / 2 - 24.0,
-                        child: CustomTextField(
-                            validateWith: Validator.stateValidator,
-                            hint: 'Enter state',
-                            maxLines: 1,
-                            readonly: false,
-                            controller: _stateController),
-                      ),
-                      SizedBox(
-                        width: size.width / 2 - 24.0,
-                        child: CustomTextField(
-                            maxLines: 1,
-                            maxCount: 6,
-                            validateWith: Validator.postalCodeValidator,
-                            keyboardType: TextInputType.number,
-                            formatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            hint: 'Postal Code',
-                            readonly: false,
-                            controller: _zipController),
-                      ),
-                    ],
-                  ),
-                  CustomTextField(
-                      formatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        new CustomInputFormatter()
-                      ],
-                      validateWith: Validator.aadharCardNumberValidator,
-                      maxCount: 14,
-                      maxLines: 1,
-                      keyboardType: TextInputType.phone,
-                      hint: 'Enter aadhar number',
-                      readonly: false,
-                      controller: _aadharController),
-                  CustomTextField(
-                      validateWith: Validator.panCardNumberValidator,
-                      hint: 'Enter pancard number',
-                      textCapitalization: TextCapitalization.characters,
-                      formatters: [UpperCaseTextFormatter()],
-                      maxCount: 10,
-                      maxLines: 1,
-                      readonly: false,
-                      controller: _panCardController),
-                  MultiSelectDialogField(
-                    items: _items,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: new BorderRadius.circular(12.0),
-                      border: Border.all(
-                        color: Colors.black.withOpacity(0.4),
-                        width: 1.0,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    buttonText: Text("Select Services",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0)),
-                    onConfirm: (List<ServicesModel?> results) {
-                      _selectedServicesModels.clear();
-                      for (int i = 0; i < results.length; i++) {
-                        _selectedServicesModels.add(results[i]!.name!);
-                      }
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  CustomTextField(
-                      hint: 'Reference /Channel patner',
-                      readonly: false,
-                      controller: _referedByController),
-                  AppDropdownInput(
-                    hintText: "Select Occupation ",
-                    options: [
-                      "Business",
-                      "Salaried",
-                      "Doctor",
-                      "Engineer",
-                      "Advocate",
-                      "Chattered Accountant",
-                      "Consultant",
-                      "Contractor"
-                    ],
-                    value: optionValue,
-                    onChanged: (String? value) {
-                      setState(() {
-                        this.optionValue = value;
-                        _optionController.text = value!;
-                      });
-                    },
-                    getLabel: (String value) => value,
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(children: [
-                    Checkbox(
-                      value: this.value,
-                      onChanged: (bool? v) {
-                        setState(() {
-                          value = v!;
-                        });
-                      },
-                    ),
-                    Flexible(
-                      child: Text(
-                          'I accept to share my personal and financial information to Global Financial Services'),
-                    )
-                  ]),
-                  SizedBox(height: 10.0),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomWidgets.getActionButton('Register', 20.0,
-                            () {
-                          if (_formKey.currentState!.validate()) {
-                            if (value) {
-                              sendOTP();
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: 'Accept the condition to register');
-                            }
-                            print(f.format(selectedDate));
-                          } else {
-                            print(f.format(selectedDate));
-                            Fluttertoast.showToast(
-                                backgroundColor: Colors.grey,
-                                msg: "Please fill all the fields");
-                          }
-                        }),
-                        CustomWidgets.getActionButton('Cancel', 20.0, () {
-                          Navigator.pop(context);
-                        })
-                      ]),
-                  SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Already have an account?',
+                      Text('Welcome on board',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w500)),
+                      SizedBox(height: 20.0),
+                      Text('Please fill in all the details to register',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500)),
-                      SizedBox(width: 10.0),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Login',
-                            style: TextStyle(
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500)),
+                      SizedBox(height: 20.0),
+                      CustomTextField(
+                          validateWith: Validator.nameValidator,
+                          hint: 'Enter full name',
+                          readonly: false,
+                          controller: _nameController),
+                      CustomTextField(
+                          maxCount: 10,
+                          maxLines: 1,
+                          validateWith: Validator.phoneValidator,
+                          formatters: [FilteringTextInputFormatter.digitsOnly],
+                          keyboardType: TextInputType.phone,
+                          hint: 'Enter mobile number',
+                          readonly: false,
+                          controller: _phoneNumberController),
+                      CustomTextField(
+                          validateWith: Validator.emailValidator,
+                          hint: 'Enter email id',
+                          readonly: false,
+                          controller: _emailController),
+                      // CustomTextField(
+                      //     validateWith: Validator.nameValidator,
+                      //     onTap: () {
+                      //       selectDate(context);
+                      //     },
+                      //     hint: 'Enter date of birth',
+                      //     readonly: true,
+                      //     controller: _dobController),
+                      PasswordField(
+                          hintText: 'Select password',
+                          validateWith: Validator.passWordValidator,
+                          controller: _passwordController),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: PasswordField(
+                            hintText: 'Confirm password',
+                            validateWith: Validator.passWordValidator,
+                            controller: _cpasswordController),
                       ),
+                      // CustomTextField(
+                      //     validateWith: Validator.addressValidator,
+                      //     maxLines: 5,
+                      //     hint: 'Full Address',
+                      //     readonly: false,
+                      //     controller: _addressController),
+                      CustomTextField(
+                          validateWith: Validator.cityValidator,
+                          hint: 'Enter city',
+                          readonly: false,
+                          controller: _cityController),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     SizedBox(
+                      //       width: size.width / 2 - 24.0,
+                      //       child: CustomTextField(
+                      //           validateWith: Validator.stateValidator,
+                      //           hint: 'Enter state',
+                      //           maxLines: 1,
+                      //           readonly: false,
+                      //           controller: _stateController),
+                      //     ),
+                      //     SizedBox(
+                      //       width: size.width / 2 - 24.0,
+                      //       child: CustomTextField(
+                      //           maxLines: 1,
+                      //           maxCount: 6,
+                      //           validateWith: Validator.postalCodeValidator,
+                      //           keyboardType: TextInputType.number,
+                      //           formatters: [
+                      //             FilteringTextInputFormatter.digitsOnly
+                      //           ],
+                      //           hint: 'Postal Code',
+                      //           readonly: false,
+                      //           controller: _zipController),
+                      //     ),
+                      //   ],
+                      // ),
+                      // CustomTextField(
+                      //     formatters: [
+                      //       FilteringTextInputFormatter.digitsOnly,
+                      //       new CustomInputFormatter()
+                      //     ],
+                      //     validateWith: Validator.aadharCardNumberValidator,
+                      //     maxCount: 14,
+                      //     maxLines: 1,
+                      //     keyboardType: TextInputType.phone,
+                      //     hint: 'Enter aadhar number',
+                      //     readonly: false,
+                      //     controller: _aadharController),
+                      // CustomTextField(
+                      //     validateWith: Validator.panCardNumberValidator,
+                      //     hint: 'Enter pancard number',
+                      //     textCapitalization: TextCapitalization.characters,
+                      //     formatters: [UpperCaseTextFormatter()],
+                      //     maxCount: 10,
+                      //     maxLines: 1,
+                      //     readonly: false,
+                      //     controller: _panCardController),
+                      MultiSelectDialogField(
+                        items: _items,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: Colors.black.withOpacity(0.4),
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        buttonText: Text("Select Services",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16.0)),
+                        onConfirm: (List<ServicesModel?> results) {
+                          _selectedServicesModels.clear();
+                          for (int i = 0; i < results.length; i++) {
+                            _selectedServicesModels.add(results[i]!.name!);
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20.0),
+                      CustomTextField(
+                          hint: 'Reference /Channel patner',
+                          readonly: false,
+                          controller: _referedByController),
+                      AppDropdownInput(
+                        hintText: "Select Occupation ",
+                        options: [
+                          "Business",
+                          "Salaried",
+                          "Doctor",
+                          "Engineer",
+                          "Advocate",
+                          "Chattered Accountant",
+                          "Consultant",
+                          "Contractor"
+                        ],
+                        value: optionValue,
+                        onChanged: (String? value) {
+                          setState(() {
+                            this.optionValue = value;
+                            _optionController.text = value!;
+                          });
+                        },
+                        getLabel: (String value) => value,
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(children: [
+                        Checkbox(
+                          value: this.value,
+                          onChanged: (bool? v) {
+                            setState(() {
+                              value = v!;
+                            });
+                          },
+                        ),
+                        Flexible(
+                          child: Text(
+                              'I accept to share my personal and financial information to Global Financial Services'),
+                        )
+                      ]),
+                      SizedBox(height: 10.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomWidgets.getActionButton('Register', 20.0, () {
+                              if (_formKey.currentState!.validate()) {
+                                if (value) {
+                                  sendOTP();
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: 'Accept the condition to register');
+                                }
+                                print(f.format(selectedDate));
+                              } else {
+                                print(f.format(selectedDate));
+                                Fluttertoast.showToast(
+                                    backgroundColor: Colors.grey,
+                                    msg: "Please fill all the fields");
+                              }
+                            }),
+                            CustomWidgets.getActionButton('Cancel', 20.0, () {
+                              Navigator.pop(context);
+                            })
+                          ]),
+                      SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Already have an account?',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500)),
+                          SizedBox(width: 10.0),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Login',
+                                style: TextStyle(
+                                    color: AppColors.kPrimaryColor,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 40.0)
                     ],
                   ),
-                  SizedBox(height: 40.0)
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ));
   }
 }

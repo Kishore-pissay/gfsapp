@@ -142,12 +142,14 @@ class _FinAdvState extends State<FinAdv> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PaymentScreen(
-                                type: 'FinAdv',
-                                payfor: 'Financial Advisory',
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentScreen(
+                        type: 'FinAdv',
+                        payfor: 'Financial Advisory',
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                     alignment: Alignment.center,

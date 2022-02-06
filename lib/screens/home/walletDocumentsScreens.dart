@@ -1,19 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/colors.dart';
 import 'package:global/Shared/customWidgets.dart';
 import 'package:global/model/getAllFiles.dart';
 import 'package:global/model/loginModelClass.dart';
 import 'package:global/screens/auth/logInScreen.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:universal_io/io.dart' as Un;
 import 'package:global/screens/home/fileUploadResponse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image/image.dart' as imageLib;
 
 class WalletDocumentScreen extends StatefulWidget {
   final String? fileName;
@@ -39,16 +43,26 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
   List imagelist = ['Camera', 'Media'];
 
   getImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
+    final pickedFile = await FilePicker.platform.pickFiles();
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
-          print(img64);
+          print("---------------------1");
+          // final bytes = html.File(pickedFile.files.first.bytes!,
+          //     pickedFile.files.first.path!);
+          print("---------------------2");
+          // final img6 = imageLib.decodeImage(pickedFile.path.codeUnits);
+          print("---------------------3");
+          // final byte = bytes.readAsBytesSync();
+          // Uint8List b = Uint8List(bytes.toString().length);
+
+          img64 = base64.encode(pickedFile.files.first.bytes!);
+          // Uint8List b = Uint8List(bytes.toString().length);
+          // print("+++++++$bytes");
+          // img64 = base64Encode(File(pickedFile.path).readAsBytesSync());
+          // print(img64);
           imagePicked = true;
-          getFileUpload(img64, "png");
+          getFileUpload(img64, pickedFile.files.first.name);
         } else {
           print('No image selected.');
         }
@@ -109,13 +123,34 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
     );
   }
 
-  Future<FileUpload?> getFileUpload(base64Image, String filetype) async {
+  int getGridCount(Size size) {
+    if (size.width > 900) {
+      return 6;
+    } else if (size.width > 600 && size.width < 900) {
+      return 4;
+    } else {
+      return 3;
+    }
+  }
+
+  Future<FileUpload?> getFileUpload(img, name) async {
+    print(name);
     EasyLoading.show(
         maskType: EasyLoadingMaskType.black,
         status: "Uploading...",
         indicator: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Colors.white),
         ));
+    print("---------------------4");
+    // final result = await FlutterImageCompress.compressWithFile(imageFile.path,
+    //     quality: 50);
+    // Uint8List imageInUnit8List = result!;
+    // print(imageFile.name);
+    // final tempDir = await getTemporaryDirectory();
+    // File file = await File('${tempDir.path}/${imageFile.name}').create();
+    // file.writeAsBytesSync(imageInUnit8List);
+    List<String> splitag = name.split(".");
+
     try {
       final dio = Dio();
       SharedPreferences sharedPreferences =
@@ -123,18 +158,31 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
       String? id = sharedPreferences.getString(StorageValues.leadId);
       String? instanceUrl =
           sharedPreferences.getString(StorageValues.instanceUrl);
-      final response =
-          await dio.post('$instanceUrl/services/apexrest/flutter/uploadfile',
-              data: base64Image,
-              options: Options(headers: {
-                HttpHeaders.acceptHeader: 'application/json',
-                HttpHeaders.authorizationHeader:
-                    'Bearer ${sharedPreferences.getString(StorageValues.accessToken)}',
-                "parentid": id,
-                "filename": widget.fileName,
-                "filetype": filetype
-              }));
-      print(response.data);
+      print("---------------------5");
+      // String fileName = base64Image.path.split('/').last;
+      // FormData formData = FormData.fromMap(
+      //   {
+      //     "file": await MultipartFile.fromFile(base64Image.path,
+      //         filename: fileName, contentType: MediaType("image", "jpeg")),
+      //   },
+      // );
+      print("---------------------5++++++++++++++++");
+      final response = await dio.post(
+        '$instanceUrl/services/apexrest/flutter/uploadfile',
+        data: img,
+        options: Options(
+          headers: {
+            HttpHeaders.acceptHeader: 'application/json',
+            HttpHeaders.authorizationHeader:
+                'Bearer ${sharedPreferences.getString(StorageValues.accessToken)}',
+            "parentid": id,
+            "filename": widget.fileName,
+            "filetype": splitag.last
+          },
+        ),
+      );
+      print("---------------------6");
+      print(response.statusCode);
       EasyLoading.dismiss();
       if (response.statusCode == 200) {
         final result = jsonDecode(response.data);
@@ -151,7 +199,9 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
         debugPrint("Auth Failed");
         return null;
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Upload failed")));
@@ -166,6 +216,7 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
         floatingActionButton:
@@ -174,7 +225,7 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
                     backgroundColor: AppColors.kPrimaryColor,
                     child: Icon(Icons.upload, color: Colors.white),
                     onPressed: () {
-                      modelBottomSheetCamera(context);
+                      getImage(ImageSource.gallery);
                     })
                 : SizedBox(),
         body: Column(
@@ -199,7 +250,7 @@ class _WalletDocumentScreenState extends State<WalletDocumentScreen> {
                 child: GridView.builder(
                     itemCount: widget.documents!.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                      crossAxisCount: getGridCount(size),
                     ),
                     itemBuilder: (ctx, i) {
                       return DocumentView(docId: widget.documents![i].id!);
@@ -341,7 +392,8 @@ class _DocumentViewState extends State<DocumentView> {
               if (data == 'No Content available for the given record Id.') {
                 return Center(child: Text("File not found"));
               } else {
-                Uint8List bytes = Base64Decoder().convert(data!);
+                print("----------------${snap.data!}");
+                var bytes = base64Decode(data!);
                 return Stack(
                   alignment: Alignment.bottomRight,
                   children: [

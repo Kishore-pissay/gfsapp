@@ -163,7 +163,6 @@ class _MudraLoanDocumentUploadWidgetState
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
@@ -318,7 +317,7 @@ class _MudraLoanDocumentUploadWidgetState
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

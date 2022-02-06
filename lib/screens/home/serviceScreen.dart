@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
+import 'package:global/Shared/routes.dart';
 import 'package:global/my_flutter_app_icons.dart';
 import 'package:global/screens/home/ewalletScreen.dart';
 import 'package:global/screens/home/finAdv.dart';
@@ -16,6 +17,52 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   ScrollController scrollController = new ScrollController();
+
+  Widget getWidget(Size size) {
+    if (size.width > 900) {
+      return ServiceScreenWidget(
+          size: size,
+          scrollController: scrollController,
+          fontSize: 40.0,
+          gridCrossAxisCount: 6);
+    } else if (size.width > 600 && size.width < 900) {
+      return ServiceScreenWidget(
+          size: size,
+          scrollController: scrollController,
+          fontSize: 30.0,
+          gridCrossAxisCount: 4);
+    } else {
+      return ServiceScreenWidget(
+          size: size,
+          scrollController: scrollController,
+          fontSize: 20.0,
+          gridCrossAxisCount: 3);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+        body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: getWidget(size)));
+  }
+}
+
+class ServiceScreenWidget extends StatelessWidget {
+  final Size size;
+  final ScrollController scrollController;
+  final double fontSize;
+  final int gridCrossAxisCount;
+  const ServiceScreenWidget(
+      {Key? key,
+      required this.size,
+      required this.scrollController,
+      required this.fontSize,
+      required this.gridCrossAxisCount})
+      : super(key: key);
+
   IconData getIcons(index) {
     if (index == 0) {
       return MyFlutterApp.assignment;
@@ -74,61 +121,60 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Scaffold(
-        body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('Services',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Services',
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight:
+                  gridCrossAxisCount == 6 ? FontWeight.w900 : FontWeight.w500,
+            ),
           ),
-          Expanded(
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: gridCrossAxisCount == 6 ? size.width * 0.15 : 0.0,
+            ),
             child: GridView.builder(
                 controller: scrollController,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                    crossAxisCount: gridCrossAxisCount),
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       if (index == 0) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => GSTFilingScreen()));
+                        Navigator.of(context)
+                            .pushNamed(CustomRoutes.gstBilling);
                       } else if (index == 1) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ItrFiling()));
-                      } //else if (index == 2) {
-                      ////tds returns
-                      //Navigator.push(
-                      //    context,
-                      //    MaterialPageRoute(
-                      //        builder: (context) => GSTFilingScreen()));
-                      //} //else if (index == 3) {
-                      ////Roc returns
-                      //Navigator.push(
-                      //    context,
-                      //    MaterialPageRoute(
-                      //        builder: (context) => GSTFilingScreen()));
-                      //}
-                      else if (index == 4) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Under Maintenance')));
+                        // Navigator.of(context)
+                        //     .pushNamed(CustomRoutes.incomeTaxReturns);
+                      } else if (index == 4) {
                         CustomWidgets.showLoansPopup(context, size);
                       } else if (index == 5) {
                         CustomWidgets.showRegistrationsPopup(context, size);
                       } else if (index == 6) {
                         //Fnancial advisor
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => FinAdv()));
+                        Navigator.of(context)
+                            .pushNamed(CustomRoutes.financialAdvices);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => FinAdv(),
+                        //   ),
+                        // );
                       } else if (index == 9) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EWalletScreen()));
+                        Navigator.of(context)
+                            .pushNamed(CustomRoutes.ewalletScreen);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => EWalletScreen()));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Under Development')));
@@ -158,8 +204,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 },
                 itemCount: 12),
           ),
-        ],
-      ),
-    ));
+        ),
+      ],
+    );
   }
 }

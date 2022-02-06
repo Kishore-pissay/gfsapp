@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/colors.dart';
+import 'package:global/Shared/routes.dart';
 import 'package:global/model/authorizationModelClass.dart';
 import 'package:global/screens/auth/logInScreen.dart';
 import 'package:global/screens/splashScreen.dart';
@@ -19,6 +21,17 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   @override
+  void initState() {
+    // Navigator.of(context)
+    //     .pushNamedAndRemoveUntil(CustomRoutes.splash, (route) => false);
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => MainScreen()),
+    //     (route) => false);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -27,7 +40,8 @@ class _SplashState extends State<Splash> {
         height: size.height,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage("assets/images/1.gif"))),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/splashbg.jpg"))),
         padding: const EdgeInsets.all(20.0),
         child: FutureBuilder(
             future: Future.delayed(Duration(seconds: 6), () {
@@ -84,37 +98,44 @@ class _SplashState extends State<Splash> {
   }
 
   getAuthorization() async {
-    Dio dio = Dio();
-    final response = await dio.post(
-      'https://globalfinancialservices2.my.salesforce.com/services/oauth2/token?client_id=3MVG9fe4g9fhX0E5moFSMuVjXIILQdOycL_P4ZFUJ55.9fq8NiT1PoQIOLHr1c6iK1.sX9lGOzBfIgRNwSQoQ&client_secret=9EB92C337008E33EDD203D33ADC2879963F4AE63999B6F2B8D34300D61086444&username=dattagfs-m1gb@force.com&password=Gindu@11&grant_type=password',
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print(response.data);
-      final result = new Map<String, dynamic>.from(response.data);
-      List<AuthorizationModelClass> auth = [];
-      auth.add(AuthorizationModelClass.fromJson(result));
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString(StorageValues.accessToken, auth[0].accessToken!);
-      prefs.setString(StorageValues.instanceUrl, auth[0].instanceUrl!);
-      if (prefs.getString(StorageValues.instanceUrl) != null &&
-          prefs.getString(StorageValues.leadId) != null) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreen()),
-            (route) => false);
-      } else {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => SplashScreen()),
-            (route) => false);
-      }
+    // String prodAuthURL =
+    //     'https://globalfinancialservices2.my.salesforce.com/services/oauth2/token?client_id=3MVG9fe4g9fhX0E5moFSMuVjXIILQdOycL_P4ZFUJ55.9fq8NiT1PoQIOLHr1c6iK1.sX9lGOzBfIgRNwSQoQ&client_secret=9EB92C337008E33EDD203D33ADC2879963F4AE63999B6F2B8D34300D61086444&username=dattagfs-m1gb@force.com&password=Gindu@1128&grant_type=password';
+    // String devAuthURL =
+    //     'https://globalfinancialservices2--devorg.my.salesforce.com/services/oauth2/token?client_id=3MVG9aWdXtdHRrI13LmmonB8g_Jv6qiVHYDCFVJNxbdtxKzcGeLWvfW.BBRdQ6dotzvI9c3XiOJm2JTBbyiqy&client_secret=731B7064CED465C18A51F40FA7D3B0C219C8158D5D08FE031ABA631FFB94D114&username=dattagfs-m1gb@force.com.devorg&password=Gindu@12&grant_type=password';
+    // Dio dio = Dio();
+    // final response = await dio.post(prodAuthURL,
+    //     options: Options(headers: {"Access-Control-Allow-Origin": "*"}));
+    // print(response.statusCode);
+    // if (response.statusCode == 200) {
+    //   print(response.data);
+    //   final result = new Map<String, dynamic>.from(response.data);
+    //   List<AuthorizationModelClass> auth = [];
+    //   auth.add(AuthorizationModelClass.fromJson(result));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(StorageValues.accessToken,
+        '00D5g00000642pa!ARMAQN6jMt6VcxL30lIubnyj2e5J7ZGf0rMEHJi_FCSspvluJvlYy5KtcBySKsWWMYwBJbLuR36rVaY80gwKNOoHWbx7xMnH');
+    prefs.setString(StorageValues.instanceUrl,
+        'https://globalfinancialservices2.my.salesforce.com');
+    //  prefs.setString(StorageValues.accessToken, auth[0].accessToken!);
+    // prefs.setString(StorageValues.instanceUrl, auth[0].instanceUrl!);
+    //     if (prefs.getString(StorageValues.instanceUrl) != null &&
+    //         prefs.getString(StorageValues.leadId) != null) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => SplashScreen()),
+        (route) => false);
+    //     } else {
+    //       Navigator.pushAndRemoveUntil(
+    //           context,
+    //           MaterialPageRoute(builder: (context) => SplashScreen()),
+    //           (route) => false);
+    //     }
 
-      return auth[0];
-    } else {
-      print(response.statusCode);
-      debugPrint("Auth Failed");
-      return null;
-    }
+    //     return auth[0];
+    //   } else {
+    //     print(response.statusCode);
+    //     debugPrint("Auth Failed");
+    //     return null;
+    //   }
   }
 }

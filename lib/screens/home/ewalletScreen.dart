@@ -167,8 +167,19 @@ class _EWalletScreenState extends State<EWalletScreen> {
     }
   }
 
+  int getGridCount(Size size) {
+    if (size.width > 900) {
+      return 8;
+    } else if (size.width > 600 && size.width < 900) {
+      return 6;
+    } else {
+      return 4;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomWidgets.getAppBar(),
       body: Column(
@@ -197,25 +208,30 @@ class _EWalletScreenState extends State<EWalletScreen> {
                   child: GridView.builder(
                     itemCount: 15,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                        crossAxisCount: getGridCount(size)),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WalletDocumentScreen(
-                                      fileName: getFileNames(index),
-                                      showUploadButton:
-                                          getgetShowUploader(index),
-                                      title: getServiceNames(index),
-                                      documents: data!
-                                          .where((record) =>
-                                              record.title ==
-                                              getListFilter(index))
-                                          .toList()))).then((value) {
-                            setState(() {});
-                          });
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WalletDocumentScreen(
+                                fileName: getFileNames(index),
+                                showUploadButton: getgetShowUploader(index),
+                                title: getServiceNames(index),
+                                documents: data!
+                                    .where(
+                                      (record) =>
+                                          record.title == getListFilter(index),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ).then(
+                            (value) {
+                              setState(() {});
+                            },
+                          );
                         },
                         child: Container(
                           margin: EdgeInsets.all(6.0),
@@ -223,13 +239,19 @@ class _EWalletScreenState extends State<EWalletScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Icon(MyFlutterApp.folder_open,
-                                  size: 45.0, color: Colors.orange),
-                              Text(getServiceNames(index),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500))
+                              Icon(
+                                MyFlutterApp.folder_open,
+                                size: 45.0,
+                                color: Colors.orange,
+                              ),
+                              Text(
+                                getServiceNames(index),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -238,7 +260,11 @@ class _EWalletScreenState extends State<EWalletScreen> {
                   ),
                 );
               } else {
-                return Center(child: Text('Please try again'));
+                return Center(
+                  child: Text(
+                    'Please try again',
+                  ),
+                );
               }
             },
           )

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
@@ -8,7 +9,7 @@ import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -35,195 +36,218 @@ class _PersonalLoanState extends State<PersonalLoan> {
       body: SingleChildScrollView(
         child: SizedBox(
           width: size.width,
-          child: Column(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-                Text('Personal Loan',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                SizedBox(width: 50)
-              ],
-            ),
-            SizedBox(height: 20),
-            Text('Please upload the list of documents required',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-            SizedBox(height: 20),
-            Text('Note: Long press on ⓘ to get additional information',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
-            SizedBox(height: 20),
-            PersonalLoanDocumentUploadWidget(
-                name: 'Aadhar Card', filename: StorageValues.kyc),
-            PersonalLoanDocumentUploadWidget(
-                name: 'Pan Card', filename: StorageValues.kyc),
-            PersonalLoanDocumentUploadWidget(
-                name: 'Passport size Photo',
-                filename: StorageValues.personalLoanProposals),
-            PersonalLoanDocumentUploadWidget(
-                name: 'Proof of Residence',
-                info:
-                    'Leave and License Agreement / Utility Bill (not more than 3 months old) / Passport (any one).',
-                filename: StorageValues.personalLoanProposals),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    width: size.width / 2 - 20.0,
-                    child: Row(children: [
-                      Radio<SelectIDType>(
-                        value: SelectIDType.salaryBased,
-                        groupValue: _character,
-                        onChanged: (SelectIDType? value) {
-                          setState(() {
-                            _character = value;
-                            print(_character);
-                          });
-                        },
-                      ),
-                      const Text('Salary based'),
-                    ])),
-                Container(
-                  width: size.width / 2 - 20.0,
-                  child: Row(
-                    children: [
-                      Radio<SelectIDType>(
-                        value: SelectIDType.selfEmployed,
-                        groupValue: _character,
-                        onChanged: (SelectIDType? value) {
-                          setState(() {
-                            _character = value;
-                          });
-                        },
-                      ),
-                      const Text('Self Employed'),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  Text('Personal Loan',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                  SizedBox(width: 50)
+                ],
+              ),
+              SizedBox(height: 20),
+              Text('Please upload the list of documents required',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              SizedBox(height: 20),
+              Text('Note: Long press on ⓘ to get additional information',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
+              SizedBox(height: 20),
+              Padding(
+                padding: CustomWidgets.getPadding(size),
+                child: Column(children: <Widget>[
+                  PersonalLoanDocumentUploadWidget(
+                      name: 'Aadhar Card', filename: StorageValues.kyc),
+                  PersonalLoanDocumentUploadWidget(
+                      name: 'Pan Card', filename: StorageValues.kyc),
+                  PersonalLoanDocumentUploadWidget(
+                      name: 'Passport size Photo',
+                      filename: StorageValues.personalLoanProposals),
+                  PersonalLoanDocumentUploadWidget(
+                      name: 'Proof of Residence',
+                      info:
+                          'Leave and License Agreement / Utility Bill (not more than 3 months old) / Passport (any one).',
+                      filename: StorageValues.personalLoanProposals),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          // width: size.width / 2 - 20.0,
+                          child: Row(children: [
+                        Radio<SelectIDType>(
+                          value: SelectIDType.salaryBased,
+                          groupValue: _character,
+                          onChanged: (SelectIDType? value) {
+                            setState(() {
+                              _character = value;
+                              print(_character);
+                            });
+                          },
+                        ),
+                        const Text('Salary based'),
+                      ])),
+                      Container(
+                        // width: size.width / 2 - 20.0,
+                        child: Row(
+                          children: [
+                            Radio<SelectIDType>(
+                              value: SelectIDType.selfEmployed,
+                              groupValue: _character,
+                              onChanged: (SelectIDType? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            const Text('Self Employed'),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
-            _character == SelectIDType.salaryBased
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Latest 3 months salary slips',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.salaryBased)),
-                      SizedBox(height: 20.0),
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Latest 3 months Bank Statement -pdf',
-                          info: 'where salary/income is credited',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.salaryBased)),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Income proof',
-                          info: 'Audited financials for the last 2 years',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.selfEmployed)),
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Latest 6 months Bank statement - pdf',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.selfEmployed)),
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Office address proof',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.selfEmployed)),
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Proof of residence or office ownership',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.selfEmployed)),
-                      SizedBox(height: 20.0),
-                      PersonalLoanDocumentUploadWidget(
-                          name: 'Proof of continuity of business',
-                          info:
-                              'Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Stateme',
-                          filename: StorageValues.autoLoanProposals,
-                          selectedprofession: EnumToString.convertToString(
-                              SelectIDType.selfEmployed)),
-                      SizedBox(height: 20.0),
-                    ],
-                  ),
-            SizedBox(height: 30),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              //CustomWidgets.getActionButton(
-              //    'Proceed to Pay', 30.0, 15.0, () {}),
-              //CustomWidgets.getActionButton(
-              //    'Cancel', 30.0, 15.0, () {
-              //  Navigator.pop(context);
-              //}),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PaymentScreen(
-                              type: 'PersonalLoan', payfor: 'Personal Loan')));
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    width: size.width / 2,
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: Color(0xffef661a),
-                          width: 1.0,
+                  _character == SelectIDType.salaryBased
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Latest 3 months salary slips',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.salaryBased)),
+                            SizedBox(height: 20.0),
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Latest 3 months Bank Statement -pdf',
+                                info: 'where salary/income is credited',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.salaryBased)),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Income proof',
+                                info: 'Audited financials for the last 2 years',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.selfEmployed)),
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Latest 6 months Bank statement - pdf',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.selfEmployed)),
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Office address proof',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.selfEmployed)),
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Proof of residence or office ownership',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.selfEmployed)),
+                            SizedBox(height: 20.0),
+                            PersonalLoanDocumentUploadWidget(
+                                name: 'Proof of continuity of business',
+                                info:
+                                    'Shop & Establishment act Certificate/ SSI or MSME Registration Certificate/ Sales Tax or VAT Certificate/ Current A/c Stateme',
+                                filename: StorageValues.autoLoanProposals,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.selfEmployed)),
+                            SizedBox(height: 20.0),
+                          ],
                         ),
-                        color: Color(
-                                (math.Random().nextDouble() * 0xFFFFFF).toInt())
-                            .withOpacity(0.2)),
-                    child: Column(children: [
-                      Text('Subscribe',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500)),
-                    ])),
-              )
-            ]),
-            SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    width: size.width / 2,
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: Color(0xffef661a),
-                          width: 1.0,
-                        ),
-                        color: Color(
-                                (math.Random().nextDouble() * 0xFFFFFF).toInt())
-                            .withOpacity(0.2)),
-                    child: Column(children: [
-                      Text('Cancel',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500)),
-                    ])),
-              )
-            ]),
-            SizedBox(height: 30),
-          ]),
+                  SizedBox(height: 30),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        //CustomWidgets.getActionButton(
+                        //    'Proceed to Pay', 30.0, 15.0, () {}),
+                        //CustomWidgets.getActionButton(
+                        //    'Cancel', 30.0, 15.0, () {
+                        //  Navigator.pop(context);
+                        //}),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PaymentScreen(
+                                        type: 'PersonalLoan',
+                                        payfor: 'Personal Loan')));
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              // width: size.width / 2,
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Color(0xffef661a),
+                                    width: 1.0,
+                                  ),
+                                  color: Color((math.Random().nextDouble() *
+                                              0xFFFFFF)
+                                          .toInt())
+                                      .withOpacity(0.2)),
+                              child: Column(children: [
+                                Text('Subscribe',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500)),
+                              ])),
+                        )
+                      ]),
+                  SizedBox(height: 20),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              // width: size.width / 2,
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Color(0xffef661a),
+                                    width: 1.0,
+                                  ),
+                                  color: Color((math.Random().nextDouble() *
+                                              0xFFFFFF)
+                                          .toInt())
+                                      .withOpacity(0.2)),
+                              child: Column(children: [
+                                Text('Cancel',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500)),
+                              ])),
+                        )
+                      ]),
+                  SizedBox(height: 30),
+                ]),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -260,12 +284,13 @@ class _PersonalLoanDocumentUploadWidgetState
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+
+          Uint8List b = Uint8List(bytes.toString().length);
+          img64 = Base64Encoder().convert(b);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -390,22 +415,27 @@ class _PersonalLoanDocumentUploadWidgetState
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Checkbox(
-          value: this.value,
-          onChanged: (bool? value) {},
-        ),
-        SizedBox(
-          width: 10,
-        ), //SizedBox
-        SizedBox(
-          width: size.width / 2,
-          child: Text(
-            '${widget.name}',
-            style: TextStyle(fontSize: 17.0),
+        Flexible(
+          child: Row(
+            children: [
+              Checkbox(
+                value: this.value,
+                onChanged: (bool? value) {},
+              ),
+              SizedBox(
+                width: 10,
+              ), //SizedBox
+              Flexible(
+                child: Text(
+                  '${widget.name}',
+                  style: TextStyle(fontSize: 17.0),
+                ),
+              ),
+            ],
           ),
-        ), //Text
-        Spacer(),
+        ),
         widget.info != null
             ? IconButton(
                 icon: Icon(MyFlutterApp.info_outline),
@@ -415,7 +445,7 @@ class _PersonalLoanDocumentUploadWidgetState
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

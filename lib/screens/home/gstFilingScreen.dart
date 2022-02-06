@@ -1,11 +1,13 @@
+import 'dart:html' as html;
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customTextField.dart';
 import 'package:global/Shared/customWidgets.dart';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'package:universal_io/io.dart' as Io;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:global/model/getUserDetailModelClass.dart';
 import 'package:global/screens/auth/logInScreen.dart';
@@ -37,16 +39,16 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
   }
 
   getImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
+    final pickedFile = await picker.pickImage(source: source, imageQuality: 80);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
-          print(img64);
+          final file = html.File(pickedFile.path.codeUnits, pickedFile.path);
+
+          img64 = base64Encode(pickedFile.path.codeUnits);
+
           imagePicked = true;
-          getFileUpload(img64, "png");
+          getFileUpload(img64, file.type);
         } else {
           print('No image selected.');
         }
@@ -203,316 +205,325 @@ class _GSTFilingScreenState extends State<GSTFilingScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
-        body: ListView(children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              Text('GST Filing',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-              SizedBox(width: 50)
-            ],
-          ),
-          SizedBox(height: 20.0),
-          Text('Prepare and upload your bills and vochers',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400)),
-          SizedBox(height: 50.0),
-          // Padding(
-          //   padding: const EdgeInsets.all(20.0),
-          //   child: Align(
-          //     alignment: Alignment.centerLeft,
-          //     child: Text('Entity Name: ',
-          //         textAlign: TextAlign.center,
-          //         style: TextStyle(
-          //             color: Colors.black,
-          //             fontSize: 16.0,
-          //             fontWeight: FontWeight.w500)),
-          //   ),
-          // ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
+        body: SingleChildScrollView(
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+              Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: [
-                //     Text('Name:  ',
-                //         style: TextStyle(
-                //             fontSize: 16, fontWeight: FontWeight.w500)),
-                //     Expanded(
-                //       child: CustomTextField(
-                //           validateWith: Validator.nameValidator,
-                //           hint: 'Entity Name',
-                //           readonly: false,
-                //           controller: _gstNoController),
-                //     ),
-                //   ],
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('GST No:  ',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    Expanded(
-                      child: CustomTextField(
-                          validateWith: Validator.nameValidator,
-                          hint: 'GST Number',
-                          readonly: true,
-                          controller: _gstNoController),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: size.height / 6,
+                IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                Text('GST Filing',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                SizedBox(width: 50)
+              ],
+            ),
+
+            Text('Prepare and upload your bills and vochers',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400)),
+
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: Text('Entity Name: ',
+            //         textAlign: TextAlign.center,
+            //         style: TextStyle(
+            //             color: Colors.black,
+            //             fontSize: 16.0,
+            //             fontWeight: FontWeight.w500)),
+            //   ),
+            // ),
+            Padding(
+              padding: CustomWidgets.getPadding(size),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Text('Name:  ',
+                  //         style: TextStyle(
+                  //             fontSize: 16, fontWeight: FontWeight.w500)),
+                  //     Expanded(
+                  //       child: CustomTextField(
+                  //           validateWith: Validator.nameValidator,
+                  //           hint: 'Entity Name',
+                  //           readonly: false,
+                  //           controller: _gstNoController),
+                  //     ),
+                  //   ],
+                  // ),
+                  SizedBox(height: 40.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Text('GST No:  ',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              modelBottomSheetCamera(context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(16),
-                              width: size.width / 2 - 36.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Color((math.Random().nextDouble() *
-                                              0xFFFFFF)
-                                          .toInt())
-                                      .withOpacity(0.2)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(MyFlutterApp.add_a_photo),
-                                    SizedBox(height: 10.0),
-                                    Text('Upload Sales Invoices',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.w400))
-                                  ]),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 20.0),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              modelBottomSheetCamera(context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(16),
-                              width: size.width / 2 - 36.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Color((math.Random().nextDouble() *
-                                              0xFFFFFF)
-                                          .toInt())
-                                      .withOpacity(0.2)),
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(MyFlutterApp.add_a_photo),
-                                    SizedBox(height: 10.0),
-                                    Text('Upload Purchase Invoices',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.w400))
-                                  ]),
-                            ),
-                          ),
+                          child: CustomTextField(
+                              validateWith: Validator.nameValidator,
+                              hint: 'GST Number',
+                              readonly: true,
+                              controller: _gstNoController),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Under Development'),
-                      ));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: size.width,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(0.2)),
-                      child: Text('Create Sales Invoices',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                FutureBuilder(
-                    future: initialize,
-                    builder: (ctx, AsyncSnapshot<UserDetailsModel?> snap) {
-                      if (snap.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snap.hasData) {
-                        UserDetailsModel data = snap.data!;
-                        if (data.gstInfo!.subscription == null) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          PaymentScreen(type: 'GST', payfor: 'GST Returns Filing')));
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                width: size.width,
-                                padding: EdgeInsets.all(10.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: size.height / 6,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => getImage(ImageSource.gallery),
+                              child: Container(
+                                padding: EdgeInsets.all(16),
+                                width: size.width / 2 - 36.0,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Color((math.Random().nextDouble() *
                                                 0xFFFFFF)
                                             .toInt())
                                         .withOpacity(0.2)),
-                                child: Column(children: [
-                                  Text('Subscribe',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500)),
-                                ])),
-                          );
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Icon(MyFlutterApp.add_a_photo),
+                                      SizedBox(height: 10.0),
+                                      Text('Upload Sales Invoices',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w400))
+                                    ]),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 20.0),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                getImage(ImageSource.gallery);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(16),
+                                width: size.width / 2 - 36.0,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Icon(MyFlutterApp.add_a_photo),
+                                      SizedBox(height: 10.0),
+                                      Text('Upload Purchase Invoices',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w400))
+                                    ]),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Under Development'),
+                        ));
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: size.width,
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Color((math.Random().nextDouble() * 0xFFFFFF)
+                                    .toInt())
+                                .withOpacity(0.2)),
+                        child: Text('Create Sales Invoices',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  FutureBuilder(
+                      future: initialize,
+                      builder: (ctx, AsyncSnapshot<UserDetailsModel?> snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snap.hasData) {
+                          UserDetailsModel data = snap.data!;
+                          if (data.gstInfo!.subscription == null) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PaymentScreen(
+                                            type: 'GST',
+                                            payfor: 'GST Returns Filing')));
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  width: size.width,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Color((math.Random().nextDouble() *
+                                                  0xFFFFFF)
+                                              .toInt())
+                                          .withOpacity(0.2)),
+                                  child: Column(children: [
+                                    Text('Subscribe',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                  ])),
+                            );
+                          } else {
+                            return Text('');
+                          }
                         } else {
                           return Text('');
                         }
-                      } else {
-                        return Text('');
-                      }
-                    }),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: SizedBox(
-                //     height: size.height / 6,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Expanded(
-                //           child: GestureDetector(
-                //             onTap: () {
-                //               ScaffoldMessenger.of(context)
-                //                   .showSnackBar(SnackBar(
-                //                 content: Text('Under Development'),
-                //               ));
-                //             },
-                //             child: Container(
-                //               padding: EdgeInsets.all(16),
-                //               width: size.width / 2 - 36.0,
-                //               decoration: BoxDecoration(
-                //                   borderRadius: BorderRadius.circular(10.0),
-                //                   color: Color((math.Random().nextDouble() *
-                //                               0xFFFFFF)
-                //                           .toInt())
-                //                       .withOpacity(0.2)),
-                //               child: Column(
-                //                   mainAxisAlignment:
-                //                       MainAxisAlignment.spaceAround,
-                //                   children: [
-                //                     RotationTransition(
-                //                       turns:
-                //                           new AlwaysStoppedAnimation(270 / 360),
-                //                       child: Icon(Icons.arrow_back,
-                //                           size: 30.0, color: Colors.black),
-                //                     ),
-                //                     SizedBox(height: 10.0),
-                //                     Text('Create Credit Vochers/ Amt Recieved',
-                //                         textAlign: TextAlign.center,
-                //                         style: TextStyle(
-                //                             color: Colors.black,
-                //                             fontSize: 12.0,
-                //                             fontWeight: FontWeight.w400))
-                //                   ]),
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(width: 20.0),
-                //         Expanded(
-                //           child: GestureDetector(
-                //             onTap: () {
-                //               ScaffoldMessenger.of(context)
-                //                   .showSnackBar(SnackBar(
-                //                 content: Text('Under Development'),
-                //               ));
-                //             },
-                //             child: Container(
-                //               padding: EdgeInsets.all(16),
-                //               width: size.width / 2 - 36.0,
-                //               decoration: BoxDecoration(
-                //                   borderRadius: BorderRadius.circular(10.0),
-                //                   color: Color((math.Random().nextDouble() *
-                //                               0xFFFFFF)
-                //                           .toInt())
-                //                       .withOpacity(0.2)),
-                //               child: Column(
-                //                   mainAxisAlignment:
-                //                       MainAxisAlignment.spaceAround,
-                //                   children: [
-                //                     RotationTransition(
-                //                       turns:
-                //                           new AlwaysStoppedAnimation(90 / 360),
-                //                       child: Icon(Icons.arrow_back,
-                //                           size: 30.0, color: Colors.black),
-                //                     ),
-                //                     SizedBox(height: 10.0),
-                //                     Text('Create Debit Vochers/ Amt Paid',
-                //                         textAlign: TextAlign.center,
-                //                         style: TextStyle(
-                //                             color: Colors.black,
-                //                             fontSize: 12.0,
-                //                             fontWeight: FontWeight.w400))
-                //                   ]),
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //       children: [
-                //         CustomWidgets.getActionButton(
-                //             'Submit', 10.0, 20.0, () {}),
-                //         CustomWidgets.getActionButton('Cancel', 10.0, 20.0, () {
-                //           Navigator.pop(context);
-                //         })
-                //       ]),
-                // ),
-                SizedBox(height: 40.0)
-              ],
+                      }),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: SizedBox(
+                  //     height: size.height / 6,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         Expanded(
+                  //           child: GestureDetector(
+                  //             onTap: () {
+                  //               ScaffoldMessenger.of(context)
+                  //                   .showSnackBar(SnackBar(
+                  //                 content: Text('Under Development'),
+                  //               ));
+                  //             },
+                  //             child: Container(
+                  //               padding: EdgeInsets.all(16),
+                  //               width: size.width / 2 - 36.0,
+                  //               decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(10.0),
+                  //                   color: Color((math.Random().nextDouble() *
+                  //                               0xFFFFFF)
+                  //                           .toInt())
+                  //                       .withOpacity(0.2)),
+                  //               child: Column(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceAround,
+                  //                   children: [
+                  //                     RotationTransition(
+                  //                       turns:
+                  //                           new AlwaysStoppedAnimation(270 / 360),
+                  //                       child: Icon(Icons.arrow_back,
+                  //                           size: 30.0, color: Colors.black),
+                  //                     ),
+                  //                     SizedBox(height: 10.0),
+                  //                     Text('Create Credit Vochers/ Amt Recieved',
+                  //                         textAlign: TextAlign.center,
+                  //                         style: TextStyle(
+                  //                             color: Colors.black,
+                  //                             fontSize: 12.0,
+                  //                             fontWeight: FontWeight.w400))
+                  //                   ]),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         SizedBox(width: 20.0),
+                  //         Expanded(
+                  //           child: GestureDetector(
+                  //             onTap: () {
+                  //               ScaffoldMessenger.of(context)
+                  //                   .showSnackBar(SnackBar(
+                  //                 content: Text('Under Development'),
+                  //               ));
+                  //             },
+                  //             child: Container(
+                  //               padding: EdgeInsets.all(16),
+                  //               width: size.width / 2 - 36.0,
+                  //               decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(10.0),
+                  //                   color: Color((math.Random().nextDouble() *
+                  //                               0xFFFFFF)
+                  //                           .toInt())
+                  //                       .withOpacity(0.2)),
+                  //               child: Column(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceAround,
+                  //                   children: [
+                  //                     RotationTransition(
+                  //                       turns:
+                  //                           new AlwaysStoppedAnimation(90 / 360),
+                  //                       child: Icon(Icons.arrow_back,
+                  //                           size: 30.0, color: Colors.black),
+                  //                     ),
+                  //                     SizedBox(height: 10.0),
+                  //                     Text('Create Debit Vochers/ Amt Paid',
+                  //                         textAlign: TextAlign.center,
+                  //                         style: TextStyle(
+                  //                             color: Colors.black,
+                  //                             fontSize: 12.0,
+                  //                             fontWeight: FontWeight.w400))
+                  //                   ]),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //       children: [
+                  //         CustomWidgets.getActionButton(
+                  //             'Submit', 10.0, 20.0, () {}),
+                  //         CustomWidgets.getActionButton('Cancel', 10.0, 20.0, () {
+                  //           Navigator.pop(context);
+                  //         })
+                  //       ]),
+                  // ),
+                  SizedBox(height: 40.0)
+                ],
+              ),
             ),
-          ),
-        ]));
+          ]),
+        ));
   }
 }

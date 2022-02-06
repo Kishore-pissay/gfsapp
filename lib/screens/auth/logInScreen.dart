@@ -5,9 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customTextField.dart';
 import 'package:global/Shared/customWidgets.dart';
+import 'package:global/Shared/routes.dart';
 import 'package:global/model/loginModelClass.dart';
-import 'package:global/screens/auth/forgotEmailScreen.dart';
-import 'package:global/screens/home/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -62,12 +61,11 @@ class _LogInScreenState extends State<LogInScreen> {
         prefs.setString(StorageValues.leadId, auth[0].recordInfo!.id!);
         prefs.setString(StorageValues.email, auth[0].recordInfo!.email!);
         prefs.setString(StorageValues.mobile, auth[0].recordInfo!.phone!);
-        prefs.setString(StorageValues.pan, auth[0].recordInfo!.panNumberC!);
-        prefs.setString(
-            StorageValues.aadhar, auth[0].recordInfo!.aadharNumberC!);
-
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+        // prefs.setString(StorageValues.pan, auth[0].recordInfo!.panNumberC!);
+        // prefs.setString(
+        //     StorageValues.aadhar, auth[0].recordInfo!.aadharNumberC!);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(CustomRoutes.home, (route) => false);
       } else {
         showDialog(
             context: context,
@@ -95,26 +93,39 @@ class _LogInScreenState extends State<LogInScreen> {
     super.dispose();
   }
 
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
+        backgroundColor: Colors.white,
         body: Stack(
           children: [
             Container(
               height: size.height,
               width: size.width,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/bg3.jpeg'))),
+                image: DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage('assets/images/wbacground.jpg'),
+                ),
+              ),
             ),
             SingleChildScrollView(
               child: Form(
                 key: _logInFormKey,
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: getPadding(size),
                   child: Column(
                     children: [
                       SizedBox(height: size.height * 0.1),
@@ -147,27 +158,30 @@ class _LogInScreenState extends State<LogInScreen> {
                         child: TextButton(
                           child: Text('Forgot Password ?'),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ForgotEmailScreen()));
+                            Navigator.of(context)
+                                .pushNamed(CustomRoutes.forgotpassword);
                           },
                         ),
                       ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomWidgets.getActionButton('Login', 20.0, () {
-                              if (FocusScope.of(context).hasFocus)
-                                FocusScope.of(context).unfocus();
-                              if (_logInFormKey.currentState!.validate()) {
-                                login();
-                              } else {}
-                            }),
-                            CustomWidgets.getActionButton('Cancel', 20.0, () {
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CustomWidgets.getActionButton('Login', 20.0, () {
+                            if (FocusScope.of(context).hasFocus)
+                              FocusScope.of(context).unfocus();
+                            if (_logInFormKey.currentState!.validate()) {
+                              login();
+                            } else {}
+                          }),
+                          CustomWidgets.getActionButton(
+                            'Cancel',
+                            20.0,
+                            () {
                               Navigator.pop(context);
-                            })
-                          ]),
+                            },
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),

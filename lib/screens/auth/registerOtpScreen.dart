@@ -50,20 +50,33 @@ class RegisterOTPScreen extends StatefulWidget {
 class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   TextEditingController _otpController = new TextEditingController();
   GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
+
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
+        backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Container(
             height: size.height,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg3.jpeg'))),
-            padding: const EdgeInsets.all(20.0),
+              fit: BoxFit.fitHeight,
+              image: AssetImage('assets/images/wbacground.jpg'),
+            )),
+            padding: getPadding(size),
             child: Column(
               children: [
                 SizedBox(height: size.height * 0.15),

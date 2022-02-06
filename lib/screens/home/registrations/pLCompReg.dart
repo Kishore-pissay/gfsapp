@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customTextField.dart';
@@ -11,7 +12,7 @@ import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,271 +99,284 @@ class _PLCompRegistrationState extends State<PLCompRegistration> {
       body: SingleChildScrollView(
         child: SizedBox(
           width: size.width,
-          child: Column(children: <Widget>[
-            SizedBox(
-              width: size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  Flexible(
-                    child: Text('Private Limited Company Registration',
-                        //textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500)),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-                'Please fill all the fields & upload the list of documents required',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-            SizedBox(height: 20),
-            Text('Note: Long press on ⓘ to get additional information',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("*all the fields are mandatory",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 8.0),
-                  CustomTextField(
-                      hint: 'Company Name',
-                      readonly: false,
-                      controller: _businessNameController),
-                  CustomTextField(
-                      hint: 'Company Mobile Number',
-                      readonly: false,
-                      controller: _businessMobileNumberController),
-                  CustomTextField(
-                      hint: 'Company Email ID',
-                      readonly: false,
-                      controller: _businesEmailIdController),
-                  CustomTextField(
-                      hint: 'Activity of the Company',
-                      readonly: false,
-                      controller: _activityBusinessController),
-                  SizedBox(height: 8.0),
-                  Text("Enter Director Details",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 8.0),
-                  CustomTextField(
-                      hint: 'Director Full Name',
-                      readonly: false,
-                      controller: _personFullNameController),
-                  CustomTextField(
-                      hint: 'Director Mobile Number',
-                      readonly: false,
-                      controller: _personMobileController),
-                  CustomTextField(
-                      hint: 'Director Email ID',
-                      readonly: false,
-                      controller: _personEmailController),
-                  SizedBox(height: 8.0),
-                  CustomWidgets.getActionButton('Submit', 20.0, () async {
-                    final response = await ApiService.sendDataValues(
-                      context: context,
-                      businessName: _businessNameController.text,
-                      mobileNo: _businessMobileNumberController.text,
-                      email: _businesEmailIdController.text,
-                      personFullName: _personFullNameController.text,
-                      personMobile: _personMobileController.text,
-                      personEmail: _personEmailController.text,
-                      businessActivity: _activityBusinessController.text,
-                      regFor: 'Private Limited Company',
-                      typeOfRegistration: 'PvtCompReg',
-                      typeOfPerson: 'Business + Director',
-                    );
-                    print(response);
-                    if (response != null) {
-                      setState(() {
-                        isSubmited = true;
-                        recordId = response;
-                      });
-                    }
-                  }),
-                  SizedBox(height: 15.0),
-                  if (isSubmited)
-                    Column(
-                      children: [
-                        Text("*upload Company related documents",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500)),
-
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Company Pan Card',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 2.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Company Incorporation Certificate',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Memorandum of Associations (MoA)',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Article of Associations (AoA)',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Company Latest month electricity bill',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Company Rental Deed - pdf',
-                            info: 'for rented premises',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Registered Company Address Proof',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Board of Resolution document',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-
-                        SizedBox(height: 8.0),
-                        Text("*upload Director documents",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500)),
-                        SizedBox(height: 8.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Aadhar Card',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        //SizedBox(height: 2.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Pan Card',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        //SizedBox(height: 2.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Passport size photo',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        //SizedBox(height: 2.0),
-                        PLCompRegistrationDocumentUploadWidget(
-                            name: 'Residential Address Proof',
-                            filename: StorageValues.pvtLtdCompReg,
-                            recID: recordId ?? ""),
-                        //SizedBox(height: 20.0),
-                        //CustomWidgets.getActionButton('+ Add Director', 15.0,
-                        //    () {
-                        //  //add partner repeat the above partnership firm list
-                        //  Navigator.pop(context);
-                        //}),
-                      ],
+          child: Column(
+            children: [
+              SizedBox(
+                width: size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                    Flexible(
+                      child: Text('Private Limited Company Registration',
+                          //textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500)),
                     ),
-                  SizedBox(height: 30),
-                  if (isSubmited)
-                    Column(
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                  'Please fill all the fields & upload the list of documents required',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              SizedBox(height: 20),
+              Text('Note: Long press on ⓘ to get additional information',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
+              SizedBox(height: 20),
+              Padding(
+                padding: CustomWidgets.getPadding(size),
+                child: Column(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        Text("*all the fields are mandatory",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                        SizedBox(height: 8.0),
+                        CustomTextField(
+                            hint: 'Company Name',
+                            readonly: false,
+                            controller: _businessNameController),
+                        CustomTextField(
+                            hint: 'Company Mobile Number',
+                            readonly: false,
+                            controller: _businessMobileNumberController),
+                        CustomTextField(
+                            hint: 'Company Email ID',
+                            readonly: false,
+                            controller: _businesEmailIdController),
+                        CustomTextField(
+                            hint: 'Activity of the Company',
+                            readonly: false,
+                            controller: _activityBusinessController),
+                        SizedBox(height: 8.0),
+                        Text("Enter Director Details",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                        SizedBox(height: 8.0),
+                        CustomTextField(
+                            hint: 'Director Full Name',
+                            readonly: false,
+                            controller: _personFullNameController),
+                        CustomTextField(
+                            hint: 'Director Mobile Number',
+                            readonly: false,
+                            controller: _personMobileController),
+                        CustomTextField(
+                            hint: 'Director Email ID',
+                            readonly: false,
+                            controller: _personEmailController),
+                        SizedBox(height: 8.0),
+                        CustomWidgets.getActionButton('Submit', 20.0, () async {
+                          final response = await ApiService.sendDataValues(
+                            context: context,
+                            businessName: _businessNameController.text,
+                            mobileNo: _businessMobileNumberController.text,
+                            email: _businesEmailIdController.text,
+                            personFullName: _personFullNameController.text,
+                            personMobile: _personMobileController.text,
+                            personEmail: _personEmailController.text,
+                            businessActivity: _activityBusinessController.text,
+                            regFor: 'Private Limited Company',
+                            typeOfRegistration: 'PvtCompReg',
+                            typeOfPerson: 'Business + Director',
+                          );
+                          print(response);
+                          if (response != null) {
+                            setState(() {
+                              isSubmited = true;
+                              recordId = response;
+                            });
+                          }
+                        }),
+                        SizedBox(height: 15.0),
+                        if (isSubmited)
+                          Column(
                             children: [
-                              //CustomWidgets.getActionButton(
-                              //    'Proceed to Pay', 30.0, 15.0, () {}),
-                              //CustomWidgets.getActionButton(
-                              //    'Cancel', 30.0, 15.0, () {
+                              Text("*upload Company related documents",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Company Pan Card',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 2.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Company Incorporation Certificate',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Memorandum of Associations (MoA)',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Article of Associations (AoA)',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Company Latest month electricity bill',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Company Rental Deed - pdf',
+                                  info: 'for rented premises',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Registered Company Address Proof',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Board of Resolution document',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+
+                              SizedBox(height: 8.0),
+                              Text("*upload Director documents",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                              SizedBox(height: 8.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Aadhar Card',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              //SizedBox(height: 2.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Pan Card',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              //SizedBox(height: 2.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Passport size photo',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              //SizedBox(height: 2.0),
+                              PLCompRegistrationDocumentUploadWidget(
+                                  name: 'Residential Address Proof',
+                                  filename: StorageValues.pvtLtdCompReg,
+                                  recID: recordId ?? ""),
+                              //SizedBox(height: 20.0),
+                              //CustomWidgets.getActionButton('+ Add Director', 15.0,
+                              //    () {
+                              //  //add partner repeat the above partnership firm list
                               //  Navigator.pop(context);
                               //}),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PaymentScreen(
-                                              type: 'PvtCompReg',
-                                              payfor:
-                                                  'Private Limited Company Registration')));
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    width: size.width / 2,
-                                    padding: EdgeInsets.all(10.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        border: Border.all(
-                                          color: Color(0xffef661a),
-                                          width: 1.0,
-                                        ),
-                                        color: Color(
-                                                (math.Random().nextDouble() *
-                                                        0xFFFFFF)
-                                                    .toInt())
-                                            .withOpacity(0.2)),
-                                    child: Column(children: [
-                                      Text('Subscribe',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500)),
-                                    ])),
-                              )
-                            ]),
-                        SizedBox(height: 20),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            ],
+                          ),
+                        SizedBox(height: 30),
+                        if (isSubmited)
+                          Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    width: size.width / 2,
-                                    padding: EdgeInsets.all(10.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        border: Border.all(
-                                          color: Color(0xffef661a),
-                                          width: 1.0,
-                                        ),
-                                        color: Color(
-                                                (math.Random().nextDouble() *
-                                                        0xFFFFFF)
-                                                    .toInt())
-                                            .withOpacity(0.2)),
-                                    child: Column(children: [
-                                      Text('Cancel',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500)),
-                                    ])),
-                              )
-                            ]),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    //CustomWidgets.getActionButton(
+                                    //    'Proceed to Pay', 30.0, 15.0, () {}),
+                                    //CustomWidgets.getActionButton(
+                                    //    'Cancel', 30.0, 15.0, () {
+                                    //  Navigator.pop(context);
+                                    //}),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PaymentScreen(
+                                                    type: 'PvtCompReg',
+                                                    payfor:
+                                                        'Private Limited Company Registration')));
+                                      },
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          // width: size.width / 2,
+                                          padding: EdgeInsets.all(10.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                color: Color(0xffef661a),
+                                                width: 1.0,
+                                              ),
+                                              color: Color((math.Random()
+                                                              .nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                                  .withOpacity(0.2)),
+                                          child: Column(children: [
+                                            Text('Subscribe',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500)),
+                                          ])),
+                                    )
+                                  ]),
+                              SizedBox(height: 20),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          // width: size.width / 2,
+                                          padding: EdgeInsets.all(10.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                color: Color(0xffef661a),
+                                                width: 1.0,
+                                              ),
+                                              color: Color((math.Random()
+                                                              .nextDouble() *
+                                                          0xFFFFFF)
+                                                      .toInt())
+                                                  .withOpacity(0.2)),
+                                          child: Column(children: [
+                                            Text('Cancel',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500)),
+                                          ])),
+                                    )
+                                  ]),
+                            ],
+                          ),
+                        SizedBox(height: 30),
                       ],
                     ),
-                  SizedBox(height: 30),
-                ],
+                  )
+                ]),
               ),
-            )
-          ]),
+            ],
+          ),
         ),
       ),
     );
@@ -400,12 +414,13 @@ class _PLCompRegistrationDocumentUploadWidgetState
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+
+          Uint8List b = Uint8List(bytes.toString().length);
+          img64 = Base64Encoder().convert(b);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -531,22 +546,27 @@ class _PLCompRegistrationDocumentUploadWidgetState
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Checkbox(
-          value: this.value,
-          onChanged: (bool? value) {},
-        ),
-        SizedBox(
-          width: 10,
-        ), //SizedBox
-        SizedBox(
-          width: size.width / 2,
-          child: Text(
-            '${widget.name}',
-            style: TextStyle(fontSize: 17.0),
+        Flexible(
+          child: Row(
+            children: [
+              Checkbox(
+                value: this.value,
+                onChanged: (bool? value) {},
+              ),
+              SizedBox(
+                width: 10,
+              ), //SizedBox
+              Flexible(
+                child: Text(
+                  '${widget.name}',
+                  style: TextStyle(fontSize: 17.0),
+                ),
+              ),
+            ],
           ),
-        ), //Text
-        Spacer(),
+        ),
         widget.info != null
             ? IconButton(
                 icon: Icon(MyFlutterApp.info_outline),
@@ -556,7 +576,7 @@ class _PLCompRegistrationDocumentUploadWidgetState
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

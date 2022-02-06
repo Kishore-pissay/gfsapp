@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:global/Shared/customTextField.dart';
 import 'package:global/Shared/customWidgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:global/Shared/routes.dart';
 import 'package:global/screens/auth/forgotOtpScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,18 +50,20 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
       final result = jsonDecode(response.data);
       final data = ResetModel.fromJson(result);
       if (data.recordId == "OTP has been sent to registered email address.") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ForgotOTPScreen(email: _emailController.text)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ForgotOTPScreen()));
       } else {
         return showDialog(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                  title: Text(data.recordId!, textAlign: TextAlign.center));
-            });
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: Text(
+                data.recordId!,
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
       }
     } else {
       EasyLoading.dismiss();
@@ -76,6 +79,16 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
     super.dispose();
   }
 
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -89,7 +102,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
               image: DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage('assets/images/bg3.jpeg'))),
-          padding: const EdgeInsets.all(20.0),
+          padding: getPadding(size),
           child: Column(
             children: [
               SizedBox(height: size.height * 0.2),

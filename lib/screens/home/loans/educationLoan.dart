@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
@@ -8,7 +9,7 @@ import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,180 +58,199 @@ class _EducationLoanState extends State<EducationLoan> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
-              EduLoanDocumentUploadWidget(
-                  name: 'Aadhar Card', filename: StorageValues.kyc),
-              EduLoanDocumentUploadWidget(
-                  name: 'Passport', filename: StorageValues.kyc),
-              EduLoanDocumentUploadWidget(
-                  name: 'Latest 6 months Bank Statement',
-                  info: '6 months Bank Statements pdf or Passbook pdf',
-                  filename: StorageValues.eduLoanProposals),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name: 'Guarantor Form (Optional)',
-                  filename: StorageValues.eduLoanProposals),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name: 'Admission Letter including Fee schedule',
-                  info:
-                      'Copy of Admission Letter of the inistitute along with fees schedule',
-                  filename: StorageValues.eduLoanProposals),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name: 'Educational MarkSheets - pdf',
-                  info:
-                      'Till date all the educational memos merged in pdf format',
-                  filename: StorageValues.eduLoanProposals),
-              SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Documents required for first disbursement',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
-              ),
-              //Text('Documents required for first disbursement ',
-              //    textAlign: TextAlign.center,
-              //    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-              //SizedBox(height: 20),
-              EduLoanDocumentUploadWidget(
-                  name: 'Demand letter from college/university',
-                  filename: StorageValues.eduLoanProposals),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Loan agreement',
-                  info: 'Loan agreement signed by applicant, co-applicants',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 5),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Sanction letter',
-                  info: 'Sanction letter signed by applicant, co-applicants',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 5),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Disbursement request form',
-                  info:
-                      'Disbursement request form signed by applicant, co-applicants',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name:
-                      'Receipts of margin money with proof of transaction - pdf',
-                  info:
-                      'Receipts of margin money paid to the college / university along with bank statement reflecting the transaction',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name:
-                      'Documents for collateral security (if applicable) - pdf',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Form A2 in case of overseas institute',
-                  info:
-                      'Form A2 signed by applicant or co-applicants in case of overseas institute',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'first disbursement'),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Documents required for subsequent disbursement',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
-              ),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Disbursement request form',
-                  info:
-                      'Disbursement request form signed by applicant, co-applicants',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'subsequent disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name:
-                      'Receipts of margin money with proof of transaction - pdf',
-                  info:
-                      'Receipts of margin money paid to the college / university along with bank statement reflecting the transaction',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'subsequent disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name:
-                      'Exam progress report, marksheet, bonafide certificate (Any one)',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'subsequent disbursement'),
-              SizedBox(height: 10),
-              EduLoanDocumentUploadWidget(
-                  name: 'Signed Form A2 in case of overseas institute',
-                  info:
-                      'Form A2 signed by applicant or co-applicants in case of overseas institute',
-                  filename: StorageValues.eduLoanProposals,
-                  selectedprofession: 'subsequent disbursement'),
-              SizedBox(height: 30),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                //CustomWidgets.getActionButton(
-                //    'Proceed to Pay', 30.0, 15.0, () {}),
-                //CustomWidgets.getActionButton(
-                //    'Cancel', 30.0, 15.0, () {
-                //  Navigator.pop(context);
-                //}),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentScreen(
-                                type: 'EDUPB', payfor: 'Education Loan')));
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Color(0xffef661a),
-                            width: 1.0,
-                          ),
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(0.2)),
-                      child: Column(children: [
-                        Text('Subscribe',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ])),
-                )
-              ]),
-              SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Color(0xffef661a),
-                            width: 1.0,
-                          ),
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(0.2)),
-                      child: Column(children: [
-                        Text('Cancel',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ])),
-                )
-              ]),
-              SizedBox(height: 30),
+                padding: CustomWidgets.getPadding(size),
+                child: Column(
+                  children: [
+                    EduLoanDocumentUploadWidget(
+                        name: 'Aadhar Card', filename: StorageValues.kyc),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Passport', filename: StorageValues.kyc),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Latest 6 months Bank Statement',
+                        info: '6 months Bank Statements pdf or Passbook pdf',
+                        filename: StorageValues.eduLoanProposals),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Guarantor Form (Optional)',
+                        filename: StorageValues.eduLoanProposals),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Admission Letter including Fee schedule',
+                        info:
+                            'Copy of Admission Letter of the inistitute along with fees schedule',
+                        filename: StorageValues.eduLoanProposals),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Educational MarkSheets - pdf',
+                        info:
+                            'Till date all the educational memos merged in pdf format',
+                        filename: StorageValues.eduLoanProposals),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Documents required for first disbursement',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w500)),
+                    ),
+                    //Text('Documents required for first disbursement ',
+                    //    textAlign: TextAlign.center,
+                    //    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                    //SizedBox(height: 20),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Demand letter from college/university',
+                        filename: StorageValues.eduLoanProposals),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Loan agreement',
+                        info:
+                            'Loan agreement signed by applicant, co-applicants',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 5),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Sanction letter',
+                        info:
+                            'Sanction letter signed by applicant, co-applicants',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 5),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Disbursement request form',
+                        info:
+                            'Disbursement request form signed by applicant, co-applicants',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name:
+                            'Receipts of margin money with proof of transaction - pdf',
+                        info:
+                            'Receipts of margin money paid to the college / university along with bank statement reflecting the transaction',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name:
+                            'Documents for collateral security (if applicable) - pdf',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Form A2 in case of overseas institute',
+                        info:
+                            'Form A2 signed by applicant or co-applicants in case of overseas institute',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'first disbursement'),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          'Documents required for subsequent disbursement',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w500)),
+                    ),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Disbursement request form',
+                        info:
+                            'Disbursement request form signed by applicant, co-applicants',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'subsequent disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name:
+                            'Receipts of margin money with proof of transaction - pdf',
+                        info:
+                            'Receipts of margin money paid to the college / university along with bank statement reflecting the transaction',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'subsequent disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name:
+                            'Exam progress report, marksheet, bonafide certificate (Any one)',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'subsequent disbursement'),
+                    SizedBox(height: 10),
+                    EduLoanDocumentUploadWidget(
+                        name: 'Signed Form A2 in case of overseas institute',
+                        info:
+                            'Form A2 signed by applicant or co-applicants in case of overseas institute',
+                        filename: StorageValues.eduLoanProposals,
+                        selectedprofession: 'subsequent disbursement'),
+                    SizedBox(height: 30),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          //CustomWidgets.getActionButton(
+                          //    'Proceed to Pay', 30.0, 15.0, () {}),
+                          //CustomWidgets.getActionButton(
+                          //    'Cancel', 30.0, 15.0, () {
+                          //  Navigator.pop(context);
+                          //}),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                          type: 'EDUPB',
+                                          payfor: 'Education Loan')));
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // width: size.width / 2,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: Color(0xffef661a),
+                                      width: 1.0,
+                                    ),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(children: [
+                                  Text('Subscribe',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ])),
+                          )
+                        ]),
+                    SizedBox(height: 20),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // width: size.width / 2,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: Color(0xffef661a),
+                                      width: 1.0,
+                                    ),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(children: [
+                                  Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ])),
+                          )
+                        ]),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              )
             ]),
           ),
         ));
@@ -267,12 +287,13 @@ class _EduLoanDocumentUploadWidgetState
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+
+          Uint8List b = Uint8List(bytes.toString().length);
+          img64 = Base64Encoder().convert(b);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -397,22 +418,28 @@ class _EduLoanDocumentUploadWidgetState
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Checkbox(
-          value: this.value,
-          onChanged: (bool? value) {},
-        ),
-        SizedBox(
-          width: 10,
-        ), //SizedBox
-        SizedBox(
-          width: size.width / 2,
-          child: Text(
-            '${widget.name}',
-            style: TextStyle(fontSize: 17.0),
+        Flexible(
+          child: Row(
+            children: [
+              Checkbox(
+                value: this.value,
+                onChanged: (bool? value) {},
+              ),
+              SizedBox(
+                width: 10,
+              ), //SizedBox
+              Flexible(
+                child: Text(
+                  '${widget.name}',
+                  style: TextStyle(fontSize: 17.0),
+                ),
+              ),
+            ],
           ),
-        ), //Text
-        Spacer(),
+        ),
+        // Spacer(),
         widget.info != null
             ? IconButton(
                 icon: Icon(MyFlutterApp.info_outline),
@@ -422,7 +449,7 @@ class _EduLoanDocumentUploadWidgetState
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

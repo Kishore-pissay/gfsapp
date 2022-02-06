@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
@@ -8,7 +9,7 @@ import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -31,15 +32,25 @@ class _HomeLoanState extends State<HomeLoan> {
   String? serviceValue;
   String? optionValue;
   bool optionVal = false;
+
+  EdgeInsetsGeometry getPadding(Size size) {
+    if (size.width > 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.3);
+    } else if (size.width > 600 && size.width < 900) {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.2);
+    } else {
+      return EdgeInsets.symmetric(horizontal: size.width * 0.1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: CustomWidgets.getAppBar(),
         body: SingleChildScrollView(
-          child: SizedBox(
-            width: size.width,
-            child: Column(children: <Widget>[
+          child: Column(
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -57,51 +68,58 @@ class _HomeLoanState extends State<HomeLoan> {
               SizedBox(height: 20),
               Text('List of documents to be submitted',
                   textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 20),
               Text('Identity proof of applicant & co-applicant',
                   textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
               SizedBox(height: 6),
               Text('Note: Long press on ⓘ to get additional information',
                   textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500)),
               SizedBox(height: 20),
-              LoanDocumentUploadWidget(
-                  name: 'Aadhar Card', filename: StorageValues.kyc),
-              LoanDocumentUploadWidget(
-                  name: 'Pan Card', filename: StorageValues.kyc),
-              LoanDocumentUploadWidget(
-                  name: 'Passport', filename: StorageValues.kyc),
-              LoanDocumentUploadWidget(
-                  name: 'Proof of the present residence',
-                  info: 'Electricity bill or Telephone bill or Ration card',
-                  filename: StorageValues.kyc),
-              LoanDocumentUploadWidget(
-                  name: 'Sales deed',
-                  info:
-                      'Agreement of sale along with link documents for the last 30 years',
-                  filename: StorageValues.loanProposalsA),
-              LoanDocumentUploadWidget(
-                  name: 'Approved plan copy',
-                  info: 'By Municipality/ Layout approval/ NOC under ULC Act',
-                  filename: StorageValues.loanProposalsA),
-              LoanDocumentUploadWidget(
-                  name: 'Valuation Report',
-                  info:
-                      'Incase Loan Value Above 1 Cr - 2 valuation reports required',
-                  filename: StorageValues.loanProposalsA),
-              LoanDocumentUploadWidget(
-                  name: 'Legal Report',
-                  info:
-                      'Incase Loan Value Above 1 Cr - 2 legal reports required',
-                  filename: StorageValues.loanProposalsA),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      width: size.width / 2 - 20.0,
-                      child: Row(children: [
+              Container(
+                padding: CustomWidgets.getPadding(size),
+                child: Column(children: <Widget>[
+                  LoanDocumentUploadWidget(
+                      name: 'Aadhar Card', filename: StorageValues.kyc),
+                  LoanDocumentUploadWidget(
+                      name: 'Pan Card', filename: StorageValues.kyc),
+                  LoanDocumentUploadWidget(
+                      name: 'Passport', filename: StorageValues.kyc),
+                  LoanDocumentUploadWidget(
+                      name: 'Proof of the present residence',
+                      info: 'Electricity bill or Telephone bill or Ration card',
+                      filename: StorageValues.kyc),
+                  LoanDocumentUploadWidget(
+                      name: 'Sales deed',
+                      info:
+                          'Agreement of sale along with link documents for the last 30 years',
+                      filename: StorageValues.loanProposalsA),
+                  LoanDocumentUploadWidget(
+                      name: 'Approved plan copy',
+                      info:
+                          'By Municipality/ Layout approval/ NOC under ULC Act',
+                      filename: StorageValues.loanProposalsA),
+                  LoanDocumentUploadWidget(
+                      name: 'Valuation Report',
+                      info:
+                          'Incase Loan Value Above 1 Cr - 2 valuation reports required',
+                      filename: StorageValues.loanProposalsA),
+                  LoanDocumentUploadWidget(
+                      name: 'Legal Report',
+                      info:
+                          'Incase Loan Value Above 1 Cr - 2 legal reports required',
+                      filename: StorageValues.loanProposalsA),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          // width: size.width / 2 - 20.0,
+                          child: Row(children: [
                         Radio<SelectIDType>(
                           value: SelectIDType.salaryBased,
                           groupValue: _character,
@@ -114,9 +132,9 @@ class _HomeLoanState extends State<HomeLoan> {
                         ),
                         const Text('Salary based'),
                       ])),
-                  Container(
-                      width: size.width / 2 - 20.0,
-                      child: Row(children: [
+                      Expanded(
+                          // width: size.width / 2 - 20.0,
+                          child: Row(children: [
                         Radio<SelectIDType>(
                           value: SelectIDType.bussiness,
                           groupValue: _character,
@@ -130,269 +148,293 @@ class _HomeLoanState extends State<HomeLoan> {
                             child: const Text(
                                 'Businessmen/ Self Employed/ Professionals')),
                       ]))
-                ],
-              ),
-              _character == SelectIDType.salaryBased
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Applicant :',
-                              style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w500)),
-                        ),
-                        Column(
+                    ],
+                  ),
+                  _character == SelectIDType.salaryBased
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Applicant :',
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                            Column(
+                              children: [
+                                LoanDocumentUploadWidget(
+                                    name: 'Latest 6 months pay slips',
+                                    filename: StorageValues.pfStatementA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name:
+                                        'Latest 6 months salary bank statements',
+                                    filename: StorageValues.itra,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Latest 3 years form 16',
+                                    filename: StorageValues.itra,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Applicant passport size photo',
+                                    filename: StorageValues.loanProposalsA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Applicant ID proof',
+                                    filename: StorageValues.loanProposalsA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Employee offer letter',
+                                    filename: StorageValues.loanProposalsA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Applicant'),
+                              ],
+                            ),
+                            SizedBox(height: 20.0),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Co-Applicant',
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                            Column(
+                              children: [
+                                LoanDocumentUploadWidget(
+                                    name: 'Latest 6 months pay slips',
+                                    filename: StorageValues.pfStatementCA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name:
+                                        'Latest 6 months salary bank statements',
+                                    filename: StorageValues.itrca,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Latest 3 years form 16',
+                                    filename: StorageValues.itrca,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Applicant passport size photo',
+                                    filename: StorageValues.loanProposalsCA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Applicant ID proof',
+                                    filename: StorageValues.loanProposalsCA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                                LoanDocumentUploadWidget(
+                                    name: 'Employee offer letter',
+                                    filename: StorageValues.loanProposalsCA,
+                                    selectedprofession:
+                                        EnumToString.convertToString(
+                                                SelectIDType.salaryBased) +
+                                            '_Co-Applicant'),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Column(
                           children: [
                             LoanDocumentUploadWidget(
-                                name: 'Latest 6 months pay slips',
-                                filename: StorageValues.pfStatementA,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Latest 6 months salary bank statements',
+                                name: '3 years of ITR',
+                                info:
+                                    'Incase turn over Above 1 Cr audit required',
                                 filename: StorageValues.itra,
                                 selectedprofession:
                                     EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Applicant'),
+                                        SelectIDType.bussiness)),
                             LoanDocumentUploadWidget(
-                                name: 'Latest 3 years form 16',
-                                filename: StorageValues.itra,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Applicant passport size photo',
+                                name: 'Bussiness registration certificate',
                                 filename: StorageValues.loanProposalsA,
                                 selectedprofession:
                                     EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Applicant'),
+                                        SelectIDType.bussiness)),
                             LoanDocumentUploadWidget(
-                                name: 'Applicant ID proof',
+                                name:
+                                    'Latest 6 months bank statements\n(Savings/Current)',
                                 filename: StorageValues.loanProposalsA,
                                 selectedprofession:
                                     EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Applicant'),
+                                        SelectIDType.bussiness)),
                             LoanDocumentUploadWidget(
-                                name: 'Employee offer letter',
+                                name: 'Latest 6 months GST returns',
+                                filename: StorageValues.gstReturns,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'KYC verification report',
+                                filename: StorageValues.kyc,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'IT verification report',
                                 filename: StorageValues.loanProposalsA,
                                 selectedprofession:
                                     EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'Firm/ Pvt.Ltd Latest 3 years IT Returns',
+                                filename: StorageValues.rocReturns,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'Assets & Liabilities',
+                                filename: StorageValues.loanProposalsA,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'Power of Attorney',
+                                filename: StorageValues.loanProposalsA,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                        SelectIDType.bussiness)),
+                            LoanDocumentUploadWidget(
+                                name: 'Passport size photo - Applicant',
+                                filename: StorageValues.loanProposalsA,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                            SelectIDType.bussiness) +
                                         '_Applicant'),
+                            LoanDocumentUploadWidget(
+                                name: 'Passport size photo - Co-Applicant',
+                                filename: StorageValues.loanProposalsCA,
+                                selectedprofession:
+                                    EnumToString.convertToString(
+                                            SelectIDType.bussiness) +
+                                        "_Co-Applicant"),
                           ],
                         ),
-                        SizedBox(height: 20.0),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Co-Applicant',
-                              style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w500)),
-                        ),
-                        Column(
-                          children: [
-                            LoanDocumentUploadWidget(
-                                name: 'Latest 6 months pay slips',
-                                filename: StorageValues.pfStatementCA,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Latest 6 months salary bank statements',
-                                filename: StorageValues.itrca,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Latest 3 years form 16',
-                                filename: StorageValues.itrca,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Applicant passport size photo',
-                                filename: StorageValues.loanProposalsCA,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Applicant ID proof',
-                                filename: StorageValues.loanProposalsCA,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                            LoanDocumentUploadWidget(
-                                name: 'Employee offer letter',
-                                filename: StorageValues.loanProposalsCA,
-                                selectedprofession:
-                                    EnumToString.convertToString(
-                                            SelectIDType.salaryBased) +
-                                        '_Co-Applicant'),
-                          ],
-                        ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: AppDropdownInput(
+                      hintText: "Home Loan amount range",
+                      options: [
+                        StorageValues.homeLoan25to75,
+                        StorageValues.homeLoan75to150
                       ],
-                    )
-                  : Column(
-                      children: [
-                        LoanDocumentUploadWidget(
-                            name: '3 years of ITR',
-                            info: 'Incase turn over Above 1 Cr audit required',
-                            filename: StorageValues.itra,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Bussiness registration certificate',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name:
-                                'Latest 6 months bank statements (Savings/Current',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Latest 6 months GST returns',
-                            filename: StorageValues.gstReturns,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'KYC verification report',
-                            filename: StorageValues.kyc,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'IT verification report',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Firm/ Pvt.Ltd Latest 3 years IT Returns',
-                            filename: StorageValues.rocReturns,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Assets & Liabilities',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Power of Attorney',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                SelectIDType.bussiness)),
-                        LoanDocumentUploadWidget(
-                            name: 'Passport size photo - Applicant',
-                            filename: StorageValues.loanProposalsA,
-                            selectedprofession: EnumToString.convertToString(
-                                    SelectIDType.bussiness) +
-                                '_Applicant'),
-                        LoanDocumentUploadWidget(
-                            name: 'Passport size photo - Co-Applicant',
-                            filename: StorageValues.loanProposalsCA,
-                            selectedprofession: EnumToString.convertToString(
-                                    SelectIDType.bussiness) +
-                                "_Co-Applicant"),
-                      ],
+                      value: optionValue,
+                      onChanged: (String? optionVal) {
+                        setState(() {
+                          this.optionValue = optionVal;
+                          _optionController.text = optionVal!;
+                        });
+                      },
+                      getLabel: (String value) => value,
                     ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: AppDropdownInput(
-                  hintText: "Home Loan amount range",
-                  options: [
-                    StorageValues.homeLoan25to75,
-                    StorageValues.homeLoan75to150
-                  ],
-                  value: optionValue,
-                  onChanged: (String? optionVal) {
-                    setState(() {
-                      this.optionValue = optionVal;
-                      _optionController.text = optionVal!;
-                    });
-                  },
-                  getLabel: (String value) => value,
-                ),
+                  ),
+                  SizedBox(height: 30),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        if (optionVal ==
+                            optionVal) // if selected option is 1 then payment type is diff
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                            type: _optionController.text ==
+                                                    StorageValues.homeLoan25to75
+                                                ? 'HomeLoanLow'
+                                                : 'HomeLoanHigh',
+                                            payfor: 'Home Loan',
+                                          )));
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // width: size.width / 2,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: Color(0xffef661a),
+                                      width: 1.0,
+                                    ),
+                                    color: Color((math.Random().nextDouble() *
+                                                0xFFFFFF)
+                                            .toInt())
+                                        .withOpacity(0.2)),
+                                child: Column(children: [
+                                  Text('Subscribe',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ])),
+                          )
+                      ]),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            alignment: Alignment.center,
+                            // width: size.width / 2,
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: Color(0xffef661a),
+                                  width: 1.0,
+                                ),
+                                color: Color(
+                                        (math.Random().nextDouble() * 0xFFFFFF)
+                                            .toInt())
+                                    .withOpacity(0.2)),
+                            child: Column(children: [
+                              Text('Cancel',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                            ])),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                ]),
               ),
-              SizedBox(height: 30),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                if (optionVal ==
-                    optionVal) // if selected option is 1 then payment type is diff
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentScreen(
-                                    type: _optionController.text ==
-                                            StorageValues.homeLoan25to75
-                                        ? 'HomeLoanLow'
-                                        : 'HomeLoanHigh',
-                                    payfor: 'Home Loan',
-                                  )));
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        width: size.width / 2,
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(
-                              color: Color(0xffef661a),
-                              width: 1.0,
-                            ),
-                            color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                    .toInt())
-                                .withOpacity(0.2)),
-                        child: Column(children: [
-                          Text('Subscribe',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500)),
-                        ])),
-                  )
-              ]),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        width: size.width / 2,
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(
-                              color: Color(0xffef661a),
-                              width: 1.0,
-                            ),
-                            color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                    .toInt())
-                                .withOpacity(0.2)),
-                        child: Column(children: [
-                          Text('Cancel',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500)),
-                        ])),
-                  )
-                ],
-              ),
-              SizedBox(height: 30),
-            ]),
+            ],
           ),
         ));
   }
@@ -427,12 +469,12 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+          Uint8List b = Uint8List(bytes.toString().length);
+          img64 = Base64Encoder().convert(b);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -468,6 +510,7 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
                     ),
                     Text(
                       imagelist[0],
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -566,9 +609,10 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
           width: 10,
         ), //SizedBox
         SizedBox(
-          width: size.width / 2,
+          // width: size.width / 2,
           child: Text(
             '${widget.name}',
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 17.0),
           ),
         ), //Text
@@ -582,7 +626,7 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

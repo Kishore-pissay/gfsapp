@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:global/Shared/customWidgets.dart';
@@ -6,7 +7,7 @@ import 'package:global/screens/auth/logInScreen.dart';
 import 'package:global/screens/home/fileUploadResponse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
-import 'dart:io' as Io;
+import 'dart:html' as html;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -92,36 +93,37 @@ class _HomeLoanState extends State<HomeLoan> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                      width: size.width / 2 - 20.0,
+                      // width: size.width / 2 - 20.0,
+
                       child: Row(children: [
-                        Radio<SelectIDType>(
-                          value: SelectIDType.salaryBased,
-                          groupValue: _character,
-                          onChanged: (SelectIDType? value) {
-                            setState(() {
-                              _character = value;
-                              print(_character);
-                            });
-                          },
-                        ),
-                        const Text('Salary based'),
-                      ])),
+                    Radio<SelectIDType>(
+                      value: SelectIDType.salaryBased,
+                      groupValue: _character,
+                      onChanged: (SelectIDType? value) {
+                        setState(() {
+                          _character = value;
+                          print(_character);
+                        });
+                      },
+                    ),
+                    const Text('Salary based'),
+                  ])),
                   Container(
-                      width: size.width / 2 - 20.0,
+                      // width: size.width / 2 - 20.0,
                       child: Row(children: [
-                        Radio<SelectIDType>(
-                          value: SelectIDType.bussiness,
-                          groupValue: _character,
-                          onChanged: (SelectIDType? value) {
-                            setState(() {
-                              _character = value;
-                            });
-                          },
-                        ),
-                        Flexible(
-                            child: const Text(
-                                'Businessmen/ Self Employed/ Professionals')),
-                      ]))
+                    Radio<SelectIDType>(
+                      value: SelectIDType.bussiness,
+                      groupValue: _character,
+                      onChanged: (SelectIDType? value) {
+                        setState(() {
+                          _character = value;
+                        });
+                      },
+                    ),
+                    Flexible(
+                        child: const Text(
+                            'Businessmen/ Self Employed/ Professionals')),
+                  ]))
                 ],
               ),
               _character == SelectIDType.salaryBased
@@ -255,12 +257,13 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
 
   getImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.pop(context);
     setState(
       () {
         if (pickedFile != null) {
-          final bytes = Io.File(pickedFile.path).readAsBytesSync();
-          img64 = base64Encode(bytes);
+          final bytes = html.File(pickedFile.path.codeUnits, pickedFile.path);
+          // File createFileFromBytes(Uint8List bytes) => File.fromRawPath(bytes);
+          // Uint8List b = Uint8List(bytes.toString().length);
+          img64 = base64Encode(pickedFile.path.codeUnits);
           print(img64);
           imagePicked = true;
           getFileUpload(img64, "png");
@@ -406,7 +409,7 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
         IconButton(
             icon: Icon(Icons.upload),
             onPressed: () {
-              modelBottomSheetCamera(context);
+              getImage(ImageSource.gallery);
             })
       ],
     );

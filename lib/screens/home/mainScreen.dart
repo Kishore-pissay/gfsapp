@@ -15,8 +15,16 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
   int currentIndex = 0;
+  var tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(initialIndex: 0, vsync: this, length: 2);
+    super.initState();
+  }
 
   void onTabTapped(int index) {
     setState(() {
@@ -27,9 +35,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget _pages(int index) {
     if (index == 0) {
       return ServiceScreen();
+      // } else if (index == 1) {
+      //   return NotificationsScreen();
     } else if (index == 1) {
-      return NotificationsScreen();
-    } else if (index == 2) {
       return ProfileScreen();
     }
     return ServiceScreen();
@@ -50,8 +58,7 @@ class _MainScreenState extends State<MainScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomWidgets.getActionButton('Confirm', 16.0,
-                        () async {
+                    CustomWidgets.getActionButton('Confirm', 16.0, () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.clear();
@@ -73,6 +80,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomWidgets.getAppBar(),
       body: Column(children: [
@@ -84,25 +92,48 @@ class _MainScreenState extends State<MainScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Hello,',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                  FutureBuilder(
-                      future: SharedPreferences.getInstance(),
-                      builder: (ctx, AsyncSnapshot<SharedPreferences> snap) {
-                        if (snap.hasData) {
-                          String? userName =
-                              snap.data!.getString(StorageValues.username);
-                          return Text(userName ?? 'Username',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500));
-                        } else {
-                          return Text('Username',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500));
-                        }
-                      })
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Hello, ',
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.w600)),
+                      FutureBuilder(
+                          future: SharedPreferences.getInstance(),
+                          builder:
+                              (ctx, AsyncSnapshot<SharedPreferences> snap) {
+                            if (snap.hasData) {
+                              String? userName =
+                                  snap.data!.getString(StorageValues.username);
+                              return Text(userName ?? 'Username',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600));
+                            } else {
+                              return Text('Username',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600));
+                            }
+                          })
+                    ],
+                  ),
                 ],
+              ),
+              Spacer(),
+              SizedBox(
+                height: size.height * 0.05,
+                width: size.width * 0.2,
+                child: TabBar(
+                    onTap: onTabTapped,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                    unselectedLabelStyle:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                    controller: tabController,
+                    tabs: [Text('Home'), Text('Profile')]),
               ),
               RotationTransition(
                 turns: new AlwaysStoppedAnimation(270 / 360),
@@ -117,35 +148,35 @@ class _MainScreenState extends State<MainScreen> {
         ),
         Expanded(child: _pages(currentIndex))
       ]),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTabTapped,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white.withOpacity(0.7),
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 0,
-        unselectedFontSize: 0,
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 20.0, color: Colors.black),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notification_add, size: 20.0, color: Colors.black),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 20.0, color: Colors.black),
-            label: 'Home',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.calculate, size: 20.0, color: Colors.black),
-          //   label: 'Home',
-          // ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: currentIndex,
+      //   onTap: onTabTapped,
+      //   selectedItemColor: Colors.white,
+      //   unselectedItemColor: Colors.white.withOpacity(0.7),
+      //   selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+      //   type: BottomNavigationBarType.fixed,
+      //   selectedFontSize: 0,
+      //   unselectedFontSize: 0,
+      //   elevation: 0,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home, size: 20.0, color: Colors.black),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.notification_add, size: 20.0, color: Colors.black),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person, size: 20.0, color: Colors.black),
+      //       label: 'Home',
+      //     ),
+      //     // BottomNavigationBarItem(
+      //     //   icon: Icon(Icons.calculate, size: 20.0, color: Colors.black),
+      //     //   label: 'Home',
+      //     // ),
+      //   ],
+      // ),
     );
   }
 }
