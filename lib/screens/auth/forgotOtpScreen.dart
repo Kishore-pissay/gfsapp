@@ -159,7 +159,7 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg3.jpeg'))),
+                    image: AssetImage('assets/images/WhiteBg.jpeg'))),
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
@@ -169,7 +169,7 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 30.0,
-                        fontWeight: FontWeight.w500)),
+                        fontWeight: FontWeight.w700)),
                 SizedBox(height: 20.0),
                 Text('Please enter your otp sent to ${widget.email}',
                     textAlign: TextAlign.center,
@@ -266,8 +266,7 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CustomWidgets.getActionButton('Confirm', 20.0,
-                            () {
+                        CustomWidgets.getActionButton('Confirm', 20.0, () {
                           updatePassword();
                         }),
                         CustomWidgets.getActionButton('Cancel', 20.0, () {

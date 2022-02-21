@@ -88,7 +88,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/bg3.jpg'))),
+                  image: AssetImage('assets/images/WhiteBg.jpg'))),
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
@@ -98,7 +98,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 16.0,
-                      fontWeight: FontWeight.w500)),
+                      fontWeight: FontWeight.w700)),
               SizedBox(height: size.height * 0.1),
               Form(
                 key: _resetFormKey,

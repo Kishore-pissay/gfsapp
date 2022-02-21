@@ -62,7 +62,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg3.jpeg'))),
+                    image: AssetImage('assets/images/WhiteBg.jpeg'))),
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [

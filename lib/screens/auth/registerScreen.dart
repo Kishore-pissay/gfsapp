@@ -207,14 +207,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hint: 'Enter email id',
                       readonly: false,
                       controller: _emailController),
-                  CustomTextField(
-                      validateWith: Validator.nameValidator,
-                      onTap: () {
-                        selectDate(context);
-                      },
-                      hint: 'Enter date of birth',
-                      readonly: true,
-                      controller: _dobController),
+                  //CustomTextField(
+                  //    validateWith: Validator.nameValidator,
+                  //    onTap: () {
+                  //      selectDate(context);
+                  //  },
+                  //hint: 'Enter date of birth',
+                  //readonly: true,
+                  //controller: _dobController),
                   PasswordField(
                       validateWith: Validator.passWordValidator,
                       controller: _passwordController),
@@ -224,66 +224,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validateWith: Validator.passWordValidator,
                         controller: _cpasswordController),
                   ),
-                  CustomTextField(
-                      validateWith: Validator.addressValidator,
-                      maxLines: 5,
-                      hint: 'Full Address',
-                      readonly: false,
-                      controller: _addressController),
-                  CustomTextField(
-                      validateWith: Validator.cityValidator,
-                      hint: 'Enter city',
-                      readonly: false,
-                      controller: _cityController),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: size.width / 2 - 24.0,
-                        child: CustomTextField(
-                            validateWith: Validator.stateValidator,
-                            hint: 'Enter state',
-                            maxLines: 1,
-                            readonly: false,
-                            controller: _stateController),
-                      ),
-                      SizedBox(
-                        width: size.width / 2 - 24.0,
-                        child: CustomTextField(
-                            maxLines: 1,
-                            maxCount: 6,
-                            validateWith: Validator.postalCodeValidator,
-                            keyboardType: TextInputType.number,
-                            formatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            hint: 'Postal Code',
-                            readonly: false,
-                            controller: _zipController),
-                      ),
-                    ],
-                  ),
-                  CustomTextField(
-                      formatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        new CustomInputFormatter()
-                      ],
-                      validateWith: Validator.aadharCardNumberValidator,
-                      maxCount: 14,
-                      maxLines: 1,
-                      keyboardType: TextInputType.phone,
-                      hint: 'Enter aadhar number',
-                      readonly: false,
-                      controller: _aadharController),
-                  CustomTextField(
-                      validateWith: Validator.panCardNumberValidator,
-                      hint: 'Enter pancard number',
-                      textCapitalization: TextCapitalization.characters,
-                      formatters: [UpperCaseTextFormatter()],
-                      maxCount: 10,
-                      maxLines: 1,
-                      readonly: false,
-                      controller: _panCardController),
+                  //CustomTextField(
+                  //  validateWith: Validator.addressValidator,
+                  //  maxLines: 5,
+                  //  hint: 'Full Address',
+                  //  readonly: false,
+                  // controller: _addressController),
+
                   MultiSelectDialogField(
                     items: _items,
                     decoration: BoxDecoration(
@@ -352,8 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CustomWidgets.getActionButton('Register', 20.0,
-                            () {
+                        CustomWidgets.getActionButton('Register', 20.0, () {
                           if (_formKey.currentState!.validate()) {
                             if (value) {
                               sendOTP();

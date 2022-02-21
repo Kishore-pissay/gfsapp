@@ -16,7 +16,8 @@ class SplashScreen extends StatelessWidget {
         width: size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage("assets/images/bg2.jpg"))),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/LoginBg.jpg"))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,12 +82,12 @@ class SplashScreen extends StatelessWidget {
             //         fontSize: 20.0,
             //         fontWeight: FontWeight.w500)),
             Spacer(), Spacer(),
-            CustomWidgets.getActionButton('SignIn',  20.0, () {
+            CustomWidgets.getActionButton('SignIn', 20.0, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LogInScreen()));
             }),
             SizedBox(height: 30.0),
-            CustomWidgets.getActionButton('SignUp',  20.0, () {
+            CustomWidgets.getActionButton('SignUp', 20.0, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),

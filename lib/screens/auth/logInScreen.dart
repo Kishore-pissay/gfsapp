@@ -108,7 +108,7 @@ class _LogInScreenState extends State<LogInScreen> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/images/bg3.jpeg'))),
+                      image: AssetImage('assets/images/WhiteBg.jpeg'))),
             ),
             SingleChildScrollView(
               child: Form(
