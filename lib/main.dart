@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:global/screens/splash.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

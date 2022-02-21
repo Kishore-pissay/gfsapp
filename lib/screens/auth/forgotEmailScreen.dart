@@ -88,7 +88,7 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/bg3.jpeg'))),
+                  image: AssetImage('assets/images/bg3.jpg'))),
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
