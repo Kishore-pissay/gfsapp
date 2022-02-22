@@ -39,42 +39,42 @@ class CustomWidgets {
 
   static getAppBar() {
     return AppBar(
-        elevation: 0.0,
-        backgroundColor: AppColors.kPrimaryColor,
-        automaticallyImplyLeading: false,
-        title: Column(
-          children: [
-            Container(
-              height: 40.0,
-              child: Image.asset('assets/images/HeaderImg.png'),
-            )
-          ],
-        )
-        // title: Row(
-        //   /* children: [
-        //     Container(
-        //       height: 40.0,
-        //       child: Image.asset('assets/images/AppLogo.png'),
-        //     ),
-        //     SizedBox(width: 10.0),
-        //     Column( */
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text('FINTECH FILINGS',
-        //             style: TextStyle(
-        //                 color: Colors.white,
-        //                 fontSize: 22.0,
-        //                 fontWeight: FontWeight.w500)),
-        //         Text('AUTOMATION OF STATUTORY FILINGS',
-        //             style: TextStyle(
-        //                 color: Colors.white,
-        //                 fontSize: 12.0,
-        //                 fontWeight: FontWeight.w500)),
-        //       ],
-        //     ),
-        //   ],
-        // ),
-        );
+      elevation: 0.0,
+      backgroundColor: AppColors.kPrimaryColor,
+      automaticallyImplyLeading: false,
+      //title: Column(
+      //  children: [
+      //    Container(
+      //      height: 40.0,
+      //      child: Image.asset('assets/images/HeaderImg.png'),
+      //    )
+      //  ],
+      //)
+      title: Row(
+        children: [
+          Container(
+            height: 40.0,
+            child: Image.asset('assets/images/AppLogo.png'),
+          ),
+          SizedBox(width: 10.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('FINTECH FILINGS',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w500)),
+              Text('AUTOMATION OF STATUTORY FILINGS',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500)),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   static showLoansPopup(BuildContext context, Size size) {

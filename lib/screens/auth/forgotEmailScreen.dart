@@ -83,49 +83,48 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
       appBar: CustomWidgets.getAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Container(
-          height: size.height,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/images/WhiteBg.jpg'))),
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              SizedBox(height: size.height * 0.2),
-              Text('Enter you email to reset your password',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700)),
-              SizedBox(height: size.height * 0.1),
-              Form(
-                key: _resetFormKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: CustomTextField(
-                    validateWith: Validator.emailValidator,
-                    hint: 'Enter your email',
-                    readonly: false,
-                    controller: _emailController),
-              ),
-              SizedBox(height: size.height * 0.05),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                CustomWidgets.getActionButton('Reset', 20.0, () {
-                  if (FocusScope.of(context).hasFocus)
-                    FocusScope.of(context).unfocus();
-                  if (_resetFormKey.currentState!.validate()) {
-                    reset();
-                  } else {
-                    print("fill the field");
-                  }
-                }),
-                CustomWidgets.getActionButton('Cancel', 20.0, () {
-                  Navigator.pop(context);
-                })
-              ]),
-            ],
-          ),
+        //child: Container(
+        //  height: size.height,
+        //  decoration: BoxDecoration(
+        //      image: DecorationImage(
+        //          fit: BoxFit.cover,
+        //          image: AssetImage('assets/images/WhiteBg.jpg'))),
+        //  padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            SizedBox(height: size.height * 0.2),
+            Text('Enter you email to reset your password',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700)),
+            SizedBox(height: size.height * 0.1),
+            Form(
+              key: _resetFormKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: CustomTextField(
+                  validateWith: Validator.emailValidator,
+                  hint: 'Enter your email',
+                  readonly: false,
+                  controller: _emailController),
+            ),
+            SizedBox(height: size.height * 0.05),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              CustomWidgets.getActionButton('Reset', 20.0, () {
+                if (FocusScope.of(context).hasFocus)
+                  FocusScope.of(context).unfocus();
+                if (_resetFormKey.currentState!.validate()) {
+                  reset();
+                } else {
+                  print("fill the field");
+                }
+              }),
+              CustomWidgets.getActionButton('Cancel', 20.0, () {
+                Navigator.pop(context);
+              })
+            ]),
+          ],
         ),
       ),
     );

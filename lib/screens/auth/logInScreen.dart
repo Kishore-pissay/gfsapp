@@ -102,14 +102,14 @@ class _LogInScreenState extends State<LogInScreen> {
         appBar: CustomWidgets.getAppBar(),
         body: Stack(
           children: [
-            Container(
-              height: size.height,
-              width: size.width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/WhiteBg.jpeg'))),
-            ),
+            //Container(
+            //  height: size.height,
+            //  width: size.width,
+            //  decoration: BoxDecoration(
+            //      image: DecorationImage(
+            //          fit: BoxFit.cover,
+            //          image: AssetImage('assets/images/WhiteBg.jpeg'))),
+            //),
             SingleChildScrollView(
               child: Form(
                 key: _logInFormKey,
