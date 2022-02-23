@@ -81,7 +81,8 @@ class SplashScreen extends StatelessWidget {
             //         color: Colors.black,
             //         fontSize: 20.0,
             //         fontWeight: FontWeight.w500)),
-            Spacer(), Spacer(), Spacer(),
+            Spacer(), Spacer(), Spacer(), Spacer(), Spacer(), Spacer(),
+            Spacer(),
             CustomWidgets.getActionButton('SignIn', 20.0, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LogInScreen()));
@@ -92,8 +93,11 @@ class SplashScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),
             Spacer(),
-            SizedBox(child: Image.asset('assets/images/Logo.png')),
-            SizedBox(height: 20.0),
+
+            SizedBox(
+              child: Image.asset('assets/images/Logo.png'),
+            ),
+            SizedBox(height: 50.0),
             // Container(
             //   margin: const EdgeInsets.symmetric(vertical: 4.0),
             //   padding: EdgeInsets.symmetric(vertical: 4.0),
