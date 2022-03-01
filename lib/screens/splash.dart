@@ -27,7 +27,8 @@ class _SplashState extends State<Splash> {
         height: size.height,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage("assets/images/1.gif"))),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/LoginBg.jpg"))),
         padding: const EdgeInsets.all(20.0),
         child: FutureBuilder(
             future: Future.delayed(Duration(seconds: 6), () {

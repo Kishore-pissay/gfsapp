@@ -62,9 +62,9 @@ class _LogInScreenState extends State<LogInScreen> {
         prefs.setString(StorageValues.leadId, auth[0].recordInfo!.id!);
         prefs.setString(StorageValues.email, auth[0].recordInfo!.email!);
         prefs.setString(StorageValues.mobile, auth[0].recordInfo!.phone!);
-        prefs.setString(StorageValues.pan, auth[0].recordInfo!.panNumberC!);
-        prefs.setString(
-            StorageValues.aadhar, auth[0].recordInfo!.aadharNumberC!);
+        //prefs.setString(StorageValues.pan, auth[0].recordInfo!.panNumberC!);
+        //prefs.setString(
+        //  StorageValues.aadhar, auth[0].recordInfo!.aadharNumberC!);
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MainScreen()));
