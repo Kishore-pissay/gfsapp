@@ -292,7 +292,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Flexible(
                       child: Text(
-                          'I accept to share my personal and financial information to Global Financial Services'),
+                          'I accept to share my personal and financial information to Fintech Filings Pvt Ltd'),
                     )
                   ]),
                   SizedBox(height: 10.0),

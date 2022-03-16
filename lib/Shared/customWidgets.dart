@@ -11,6 +11,7 @@ import 'package:global/screens/home/registrations/gstFreshReg.dart';
 import 'package:global/screens/home/registrations/pLCompReg.dart';
 import 'package:global/screens/home/registrations/partFirmReg.dart';
 import 'package:global/screens/home/registrations/udyamiReg.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class CustomWidgets {
   static getActionButton(String text, double fontSize, void Function()? onTap) {
@@ -56,11 +57,11 @@ class CustomWidgets {
             height: 40.0,
             child: Image.asset('assets/images/AppLogo.png'),
           ),
-          SizedBox(width: 10.0),
+          SizedBox(width: 20.0),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('FINTECH FILINGS',
+              Text('FINTECH FILINGS PVT LTD',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 22.0,
@@ -319,6 +320,62 @@ class CustomWidgets {
               ));
         });
   }
+
+  static getLoginCarousel() {
+    return CarouselSlider(
+        items: [
+          MyImageView('assets/images/hl.png'),
+          MyImageView('assets/images/msme2.png')
+        ],
+        options: CarouselOptions(
+          height: 180.0,
+          enlargeCenterPage: true,
+          autoPlay: true,
+          //aspectRatio: 16 / 9,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enableInfiniteScroll: true,
+          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          viewportFraction: 0.8,
+        ));
+    //CarouselSlider(
+    //  items: [
+    //    //1st Image of Slider
+    //    Container(
+    //      margin: EdgeInsets.all(6.0),
+    //      decoration: BoxDecoration(
+    //        borderRadius: BorderRadius.circular(8.0),
+    //        image: DecorationImage(
+    //          image: AssetImage('assets/images/hl.png'),
+    //          fit: BoxFit.cover,
+    //        ),
+    //      ),
+    //    ),
+//
+    //    //2nd Image of Slider
+    //    Container(
+    //      margin: EdgeInsets.all(6.0),
+    //      decoration: BoxDecoration(
+    //        borderRadius: BorderRadius.circular(8.0),
+    //        image: DecorationImage(
+    //          image: AssetImage('assets/images/msme2.png'),
+    //          fit: BoxFit.cover,
+    //        ),
+    //      ),
+    //    ),
+    //  ],
+    //  options: CarouselOptions(
+    //    height: 180.0,
+    //    enlargeCenterPage: true,
+    //    autoPlay: true,
+    //    //aspectRatio: 16 / 9,
+    //    autoPlayCurve: Curves.fastOutSlowIn,
+    //    enableInfiniteScroll: true,
+    //    autoPlayAnimationDuration:
+    //        Duration(milliseconds: 800),
+    //    viewportFraction: 0.8,
+    //  ),
+    //),
+  }
 }
 
 class AppDropdownInput<T> extends StatelessWidget {
@@ -407,5 +464,23 @@ class BulletPoint extends StatelessWidget {
         shape: BoxShape.circle,
       ),
     );
+  }
+}
+
+class MyImageView extends StatelessWidget {
+  String imgPath;
+
+  MyImageView(this.imgPath);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: Image.asset(
+            imgPath,
+          ),
+        ));
   }
 }
