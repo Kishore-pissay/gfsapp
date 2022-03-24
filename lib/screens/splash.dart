@@ -97,7 +97,7 @@ class _SplashState extends State<Splash> {
 
   getAuthorization() async {
     String prodAuthURL =
-        'https://globalfinancialservices2.my.salesforce.com/services/oauth2/token?client_id=3MVG9fe4g9fhX0E5moFSMuVjXIILQdOycL_P4ZFUJ55.9fq8NiT1PoQIOLHr1c6iK1.sX9lGOzBfIgRNwSQoQ&client_secret=9EB92C337008E33EDD203D33ADC2879963F4AE63999B6F2B8D34300D61086444&username=dattagfs-m1gb@force.com&password=Gindu@1128&grant_type=password';
+        'https://globalfinancialservices2.my.salesforce.com/services/oauth2/token?client_id=3MVG9fe4g9fhX0E5moFSMuVjXIILQdOycL_P4ZFUJ55.9fq8NiT1PoQIOLHr1c6iK1.sX9lGOzBfIgRNwSQoQ&client_secret=9EB92C337008E33EDD203D33ADC2879963F4AE63999B6F2B8D34300D61086444&username=dattagfs-m1gb@force.com&password=Admin@28&grant_type=password';
     String devAuthURL =
         'https://globalfinancialservices2--devorg.my.salesforce.com/services/oauth2/token?client_id=3MVG9aWdXtdHRrI13LmmonB8g_Jv6qiVHYDCFVJNxbdtxKzcGeLWvfW.BBRdQ6dotzvI9c3XiOJm2JTBbyiqy&client_secret=731B7064CED465C18A51F40FA7D3B0C219C8158D5D08FE031ABA631FFB94D114&username=dattagfs-m1gb@force.com.devorg&password=Gindu@12&grant_type=password';
     Dio dio = Dio();
