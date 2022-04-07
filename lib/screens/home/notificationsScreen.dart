@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);

@@ -1,21 +1,7 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:fintechfilings/Shared/customTextField.dart';
 import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/model/getUserDetailModelClass.dart';
-import 'package:fintechfilings/screens/auth/logInScreen.dart';
-import 'package:fintechfilings/screens/home/fileUploadResponse.dart';
 import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:io' as Io;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../my_flutter_app_icons.dart';
 
 class FinAdv extends StatefulWidget {
   const FinAdv({Key? key}) : super(key: key);

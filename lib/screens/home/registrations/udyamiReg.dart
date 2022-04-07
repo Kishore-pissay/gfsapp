@@ -15,7 +15,6 @@ import 'dart:io' as Io;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../my_flutter_app_icons.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 
 enum SelectIDType { proprietor, partnershipfirm, pvtltdcompany }
 

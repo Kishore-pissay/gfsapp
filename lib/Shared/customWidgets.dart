@@ -322,7 +322,7 @@ class CustomWidgets {
   }
 
   static getLoginCarousel() {
-    return CarouselSlider(
+    return /* CarouselSlider(
         items: [
           MyImageView('assets/images/carousal2.jpg'),
           MyImageView('assets/images/carousal3.jpg'),
@@ -333,50 +333,69 @@ class CustomWidgets {
           height: 180.0,
           enlargeCenterPage: true,
           autoPlay: true,
-          //aspectRatio: 16 / 9,
+          aspectRatio: 16 / 9,
           autoPlayCurve: Curves.fastOutSlowIn,
           enableInfiniteScroll: true,
-          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          autoPlayAnimationDuration: Duration(milliseconds: 600),
           viewportFraction: 0.8,
-        ));
-    //CarouselSlider(
-    //  items: [
-    //    //1st Image of Slider
-    //    Container(
-    //      margin: EdgeInsets.all(6.0),
-    //      decoration: BoxDecoration(
-    //        borderRadius: BorderRadius.circular(8.0),
-    //        image: DecorationImage(
-    //          image: AssetImage('assets/images/hl.png'),
-    //          fit: BoxFit.cover,
-    //        ),
-    //      ),
-    //    ),
-//
-    //    //2nd Image of Slider
-    //    Container(
-    //      margin: EdgeInsets.all(6.0),
-    //      decoration: BoxDecoration(
-    //        borderRadius: BorderRadius.circular(8.0),
-    //        image: DecorationImage(
-    //          image: AssetImage('assets/images/msme2.png'),
-    //          fit: BoxFit.cover,
-    //        ),
-    //      ),
-    //    ),
-    //  ],
-    //  options: CarouselOptions(
-    //    height: 180.0,
-    //    enlargeCenterPage: true,
-    //    autoPlay: true,
-    //    //aspectRatio: 16 / 9,
-    //    autoPlayCurve: Curves.fastOutSlowIn,
-    //    enableInfiniteScroll: true,
-    //    autoPlayAnimationDuration:
-    //        Duration(milliseconds: 800),
-    //    viewportFraction: 0.8,
-    //  ),
-    //),
+        )); */
+        CarouselSlider(
+      items: [
+        //1st Image of Slider
+        Container(
+          margin: EdgeInsets.all(6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage('assets/images/carousal2.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+
+        //2nd Image of Slider
+        Container(
+          margin: EdgeInsets.all(6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage('assets/images/carousal3.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage('assets/images/carousal1.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage('assets/images/carousal4.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
+      options: CarouselOptions(
+        height: 180.0,
+        enlargeCenterPage: true,
+        autoPlay: true,
+        //aspectRatio: 16 / 9,
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enableInfiniteScroll: true,
+        autoPlayAnimationDuration: Duration(milliseconds: 600),
+        viewportFraction: 0.83,
+      ),
+    );
   }
 }
 
@@ -469,7 +488,7 @@ class BulletPoint extends StatelessWidget {
   }
 }
 
-class MyImageView extends StatelessWidget {
+/* class MyImageView extends StatelessWidget {
   String imgPath;
 
   MyImageView(this.imgPath);
@@ -486,3 +505,4 @@ class MyImageView extends StatelessWidget {
         ));
   }
 }
+ */

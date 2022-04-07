@@ -160,7 +160,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               Navigator.pop(context);
                             })
                           ]),
-                      SizedBox(height: 50.0),
+                      SizedBox(height: 70.0),
                       CustomWidgets.getLoginCarousel()
                     ],
                   ),

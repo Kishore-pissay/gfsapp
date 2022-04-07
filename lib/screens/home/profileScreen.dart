@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fintechfilings/Shared/customTextField.dart';
 import 'package:fintechfilings/model/getUserDetailModelClass.dart';
 import 'package:fintechfilings/screens/auth/logInScreen.dart';
 import 'dart:math' as math;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
