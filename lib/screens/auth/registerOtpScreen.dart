@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/screens/auth/forgotEmailScreen.dart';
-import 'package:global/screens/auth/logInScreen.dart';
-import 'package:global/screens/splashScreen.dart';
+import 'package:fintechfilings/screens/auth/forgotEmailScreen.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/screens/splashScreen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:global/Shared/customWidgets.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterOTPScreen extends StatefulWidget {
@@ -57,13 +57,6 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       appBar: CustomWidgets.getAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        //child: Container(
-        //  height: size.height,
-        //  decoration: BoxDecoration(
-        //      image: DecorationImage(
-        //          fit: BoxFit.cover,
-        //          image: AssetImage('assets/images/WhiteBg.jpeg'))),
-        //  padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             SizedBox(height: size.height * 0.15),
@@ -246,7 +239,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
         "Services__c": service,
         "Refered_by__c": widget.reference,
         "Occupation__c": widget.occupation,
-        "Company": "GlobalFinacialService"
+        "Company": "FintechFilings"
       },
       options: Options(
           followRedirects: false,

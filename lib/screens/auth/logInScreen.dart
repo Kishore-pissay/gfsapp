@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customTextField.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/model/loginModelClass.dart';
-import 'package:global/screens/auth/forgotEmailScreen.dart';
-import 'package:global/screens/home/mainScreen.dart';
+import 'package:fintechfilings/Shared/customTextField.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:fintechfilings/model/loginModelClass.dart';
+import 'package:fintechfilings/screens/auth/forgotEmailScreen.dart';
+import 'package:fintechfilings/screens/home/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -103,14 +102,6 @@ class _LogInScreenState extends State<LogInScreen> {
         appBar: CustomWidgets.getAppBar(),
         body: Stack(
           children: [
-            //Container(
-            //  height: size.height,
-            //  width: size.width,
-            //  decoration: BoxDecoration(
-            //      image: DecorationImage(
-            //          fit: BoxFit.cover,
-            //          image: AssetImage('assets/images/WhiteBg.jpeg'))),
-            //),
             SingleChildScrollView(
               child: Form(
                 key: _logInFormKey,

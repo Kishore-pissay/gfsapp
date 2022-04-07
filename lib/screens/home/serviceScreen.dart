@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/my_flutter_app_icons.dart';
-import 'package:global/screens/home/ewalletScreen.dart';
-import 'package:global/screens/home/finAdv.dart';
-import 'package:global/screens/home/gstFilingScreen.dart';
-import 'package:global/screens/home/itr.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:fintechfilings/my_flutter_app_icons.dart';
+import 'package:fintechfilings/screens/home/ewalletScreen.dart';
+import 'package:fintechfilings/screens/home/finAdv.dart';
+import 'package:fintechfilings/screens/home/gstFilingScreen.dart';
+import 'package:fintechfilings/screens/home/itr.dart';
 
 class ServiceScreen extends StatefulWidget {
   const ServiceScreen({Key? key}) : super(key: key);

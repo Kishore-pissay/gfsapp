@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customTextField.dart';
-import 'package:global/Shared/customWidgets.dart';
+import 'package:fintechfilings/Shared/customTextField.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:global/screens/auth/forgotOtpScreen.dart';
+import 'package:fintechfilings/screens/auth/forgotOtpScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgotEmailScreen extends StatefulWidget {
@@ -83,13 +83,6 @@ class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
       appBar: CustomWidgets.getAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        //child: Container(
-        //  height: size.height,
-        //  decoration: BoxDecoration(
-        //      image: DecorationImage(
-        //          fit: BoxFit.cover,
-        //          image: AssetImage('assets/images/WhiteBg.jpg'))),
-        //  padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             SizedBox(height: size.height * 0.2),

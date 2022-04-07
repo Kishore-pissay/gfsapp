@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customTextField.dart';
-import 'package:global/Shared/customWidgets.dart';
+import 'package:fintechfilings/Shared/customTextField.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../splashScreen.dart';
@@ -153,14 +153,6 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
       appBar: CustomWidgets.getAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        //child: Container(
-        //  height: size.height,
-        //  width: size.width,
-        //  decoration: BoxDecoration(
-        //      image: DecorationImage(
-        //          fit: BoxFit.cover,
-        //          image: AssetImage('assets/images/WhiteBg.jpeg'))),
-        //  padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             SizedBox(height: size.height * 0.1),
@@ -183,16 +175,11 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
                 child: PinCodeTextField(
                   appContext: context,
-                  // pastedTextStyle: TextStyle(
-                  //   color: Colors.green.shade600,
-                  //   fontWeight: FontWeight.bold,
-                  // ),
+
                   length: 5,
                   obscureText: false,
                   obscuringCharacter: '*',
-                  // obscuringWidget: FlutterLogo(
-                  //   size: 24,
-                  // ),
+
                   blinkWhenObscuring: true,
                   animationType: AnimationType.fade,
                   validator: (v) {
@@ -202,13 +189,7 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
                       return null;
                     }
                   },
-                  // pinTheme: PinTheme(
-                  //   shape: PinCodeFieldShape.box,
-                  //   borderRadius: BorderRadius.circular(5),
-                  //   fieldHeight: 50,
-                  //   fieldWidth: 40,
-                  //   activeFillColor: Colors.white,
-                  // ),
+
                   cursorColor: Colors.black,
                   animationDuration: Duration(milliseconds: 300),
                   enableActiveFill: true,

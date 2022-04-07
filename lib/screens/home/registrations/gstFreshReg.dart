@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customTextField.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/model/getUserDetailModelClass.dart';
-import 'package:global/screens/apiservicessenddata.dart';
-import 'package:global/screens/auth/logInScreen.dart';
-import 'package:global/screens/home/fileUploadResponse.dart';
-import 'package:global/screens/home/payment/paymentScreen.dart';
+import 'package:fintechfilings/Shared/customTextField.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:fintechfilings/model/getUserDetailModelClass.dart';
+import 'package:fintechfilings/screens/apiservicessenddata.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/screens/home/fileUploadResponse.dart';
+import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;
@@ -873,7 +873,7 @@ class _GstRegistrationDocumentUploadWidgetState
       ////String? instanceUrl =
       ////  sharedPreferences.getString(StorageValues.instanceUrl);
       //final response = await dio.post(
-      //    "https://globalfinancialservices2--devorg.my.salesforce.com/services/apexrest/fluttermediafiledetail/uploadFile",
+      //    "https://fintechfilingsfinancialservices2--devorg.my.salesforce.com/services/apexrest/fluttermediafiledetail/uploadFile",
       //    data: base64Image,
       //    options: Options(headers: {
       //      HttpHeaders.acceptHeader: 'application/json',

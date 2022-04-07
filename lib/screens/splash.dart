@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/Shared/colors.dart';
-import 'package:global/model/authorizationModelClass.dart';
-import 'package:global/screens/auth/logInScreen.dart';
-import 'package:global/screens/splashScreen.dart';
+import 'package:fintechfilings/Shared/colors.dart';
+import 'package:fintechfilings/model/authorizationModelClass.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/screens/splashScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home/mainScreen.dart';

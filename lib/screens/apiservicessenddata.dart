@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:global/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
 import 'dart:convert';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +37,7 @@ class ApiService {
           sharedPreferences.getString(StorageValues.instanceUrl);
       final response = await dio.post(
           //'$instanceUrl/services/apexrest/fluttergstregistration/GstReg?LeadId=$id&businessname=$businessName&regFor=$regFor&fullname=$fullName&mobileno=$mobileNo&emailid=$email&businessactivity=$businessActivity&typeofperson=$typeOfPerson&reqTyp=$typeOfRegistration&personfullname=$personFullName&personmobileno=$personMobile&personemailid=$personEmail',
-          //"https://globalfinancialservices2.my.salesforce.com/services/apexrest/fluttergstregistration/GstReg?LeadId=$id&businessname=$businessName&regFor=$regFor&fullname=$fullName&mobileno=$mobileNo&emailid=$email&businessactivity=$businessActivity&typeofperson=$typeOfPerson&personfullname=$personFullName&personmobileno=$personMobile&personemailid=$personEmail",
+          //"https://fintechfilingsfinancialservices2.my.salesforce.com/services/apexrest/fluttergstregistration/GstReg?LeadId=$id&businessname=$businessName&regFor=$regFor&fullname=$fullName&mobileno=$mobileNo&emailid=$email&businessactivity=$businessActivity&typeofperson=$typeOfPerson&personfullname=$personFullName&personmobileno=$personMobile&personemailid=$personEmail",
           "$instanceUrl/services/apexrest/fluttergstregistration/GstReg?LeadId=$id&businessname=$businessName&regFor=$regFor&fullname=$fullName&mobileno=$mobileNo&emailid=$email&businessactivity=$businessActivity&typeofperson=$typeOfPerson&personfullname=$personFullName&personmobileno=$personMobile&personemailid=${personEmail ?? ''}",
           //data: {
           //  "businessname": businessName,
@@ -121,10 +121,10 @@ class ApiService {
 //          '00D0p0000000O08!AQcAQEIIso1i62VA2H.lbdCMyu0_VCbbax076J70GdI7by.fIGqNbgU49WRG71iC42JGz5ITcDhyOX7X4OML5.0uaFUgJDTE';
 //      //sharedPreferences.getString(StorageValues.leadId);
 //      String? instanceUrl =
-//          "https://globalfinancialservices2--devorg.my.salesforce.com";
+//          "https://fintechfilingsfinancialservices2--devorg.my.salesforce.com";
 //      //sharedPreferences.getString(StorageValues.instanceUrl);
 //      final response = await dio.post(
-//          "https://globalfinancialservices2--devorg.my.salesforce.com/services/apexrest/fluttergstregistration/GstReg?leadid=$id&businessname=$businessName&regfor=$regFor&fullname=$fullName&mobileno=$personMobile&emailid=$personEmail&businessactivity=$businessActivity&typeofperson=$typeOfPerson&reqTyp=$typeOfRegistration",
+//          "https://fintechfilingsfinancialservices2--devorg.my.salesforce.com/services/apexrest/fluttergstregistration/GstReg?leadid=$id&businessname=$businessName&regfor=$regFor&fullname=$fullName&mobileno=$personMobile&emailid=$personEmail&businessactivity=$businessActivity&typeofperson=$typeOfPerson&reqTyp=$typeOfRegistration",
 //          // data: {
 //          //"leadid": id,
 //          //"businessname": businessName,

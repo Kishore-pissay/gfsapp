@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:cashfree_pg/cashfree_pg.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/model/orderIdModel.dart';
-import 'package:global/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:fintechfilings/model/orderIdModel.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentScreen extends StatefulWidget {

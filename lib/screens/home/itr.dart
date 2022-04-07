@@ -1,21 +1,5 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:global/Shared/customTextField.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/model/getUserDetailModelClass.dart';
-import 'package:global/screens/auth/logInScreen.dart';
-import 'package:global/screens/home/fileUploadResponse.dart';
-import 'package:global/screens/home/payment/paymentScreen.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
-import 'dart:math' as math;
-import 'dart:io' as Io;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../my_flutter_app_icons.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
 
 class ItrFiling extends StatefulWidget {
   const ItrFiling({Key? key}) : super(key: key);

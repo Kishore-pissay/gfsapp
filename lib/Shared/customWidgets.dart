@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:global/Shared/colors.dart';
+import 'package:fintechfilings/Shared/colors.dart';
 import 'dart:math' as math;
-import 'package:global/screens/home/loans/homeLoan.dart';
-import 'package:global/screens/home/loans/autoLoan.dart';
-import 'package:global/screens/home/loans/educationLoan.dart';
-import 'package:global/screens/home/loans/msmeFreshLoan.dart';
-import 'package:global/screens/home/loans/personalLoan.dart';
-import 'package:global/screens/home/payment/paymentScreen.dart';
-import 'package:global/screens/home/registrations/gstFreshReg.dart';
-import 'package:global/screens/home/registrations/pLCompReg.dart';
-import 'package:global/screens/home/registrations/partFirmReg.dart';
-import 'package:global/screens/home/registrations/udyamiReg.dart';
+import 'package:fintechfilings/screens/home/loans/homeLoan.dart';
+import 'package:fintechfilings/screens/home/loans/autoLoan.dart';
+import 'package:fintechfilings/screens/home/loans/educationLoan.dart';
+import 'package:fintechfilings/screens/home/loans/msmeFreshLoan.dart';
+import 'package:fintechfilings/screens/home/loans/personalLoan.dart';
+import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
+import 'package:fintechfilings/screens/home/registrations/gstFreshReg.dart';
+import 'package:fintechfilings/screens/home/registrations/pLCompReg.dart';
+import 'package:fintechfilings/screens/home/registrations/partFirmReg.dart';
+import 'package:fintechfilings/screens/home/registrations/udyamiReg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class CustomWidgets {
@@ -324,8 +324,10 @@ class CustomWidgets {
   static getLoginCarousel() {
     return CarouselSlider(
         items: [
-          MyImageView('assets/images/hl.png'),
-          MyImageView('assets/images/msme2.png')
+          MyImageView('assets/images/carousal2.jpg'),
+          MyImageView('assets/images/carousal3.jpg'),
+          MyImageView('assets/images/carousal1.jpg'),
+          MyImageView('assets/images/carousal4.jpg')
         ],
         options: CarouselOptions(
           height: 180.0,

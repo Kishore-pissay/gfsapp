@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:global/Shared/customWidgets.dart';
-import 'package:global/screens/auth/logInScreen.dart';
-import 'package:global/screens/home/notificationsScreen.dart';
-import 'package:global/screens/home/profileScreen.dart';
-import 'package:global/screens/home/serviceScreen.dart';
-import 'package:global/screens/splash.dart';
+import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:fintechfilings/screens/auth/logInScreen.dart';
+import 'package:fintechfilings/screens/home/notificationsScreen.dart';
+import 'package:fintechfilings/screens/home/profileScreen.dart';
+import 'package:fintechfilings/screens/home/serviceScreen.dart';
+import 'package:fintechfilings/screens/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../my_flutter_app_icons.dart';
 
@@ -50,8 +50,7 @@ class _MainScreenState extends State<MainScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomWidgets.getActionButton('Confirm', 16.0,
-                        () async {
+                    CustomWidgets.getActionButton('Confirm', 16.0, () async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.clear();
