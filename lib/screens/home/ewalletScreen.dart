@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/model/getAllFiles.dart';
-import 'package:fintechfilings/screens/auth/logInScreen.dart';
-import 'package:fintechfilings/screens/home/walletDocumentsScreens.dart';
+import 'package:global/Shared/customWidgets.dart';
+import 'package:global/model/getAllFiles.dart';
+import 'package:global/screens/auth/logInScreen.dart';
+import 'package:global/screens/home/walletDocumentsScreens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../my_flutter_app_icons.dart';
 

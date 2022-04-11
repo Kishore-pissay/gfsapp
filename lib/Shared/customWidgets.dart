@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/colors.dart';
+import 'package:global/Shared/colors.dart';
 import 'dart:math' as math;
-import 'package:fintechfilings/screens/home/loans/homeLoan.dart';
-import 'package:fintechfilings/screens/home/loans/autoLoan.dart';
-import 'package:fintechfilings/screens/home/loans/educationLoan.dart';
-import 'package:fintechfilings/screens/home/loans/msmeFreshLoan.dart';
-import 'package:fintechfilings/screens/home/loans/personalLoan.dart';
-import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
-import 'package:fintechfilings/screens/home/registrations/gstFreshReg.dart';
-import 'package:fintechfilings/screens/home/registrations/pLCompReg.dart';
-import 'package:fintechfilings/screens/home/registrations/partFirmReg.dart';
-import 'package:fintechfilings/screens/home/registrations/udyamiReg.dart';
+import 'package:global/screens/home/loans/homeLoan.dart';
+import 'package:global/screens/home/loans/autoLoan.dart';
+import 'package:global/screens/home/loans/educationLoan.dart';
+import 'package:global/screens/home/loans/msmeFreshLoan.dart';
+import 'package:global/screens/home/loans/personalLoan.dart';
+import 'package:global/screens/home/payment/paymentScreen.dart';
+import 'package:global/screens/home/registrations/gstFreshReg.dart';
+import 'package:global/screens/home/registrations/pLCompReg.dart';
+import 'package:global/screens/home/registrations/partFirmReg.dart';
+import 'package:global/screens/home/registrations/udyamiReg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class CustomWidgets {

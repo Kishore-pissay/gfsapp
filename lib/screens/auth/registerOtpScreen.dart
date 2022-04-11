@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/screens/auth/forgotEmailScreen.dart';
-import 'package:fintechfilings/screens/auth/logInScreen.dart';
-import 'package:fintechfilings/screens/splashScreen.dart';
+import 'package:global/screens/auth/forgotEmailScreen.dart';
+import 'package:global/screens/auth/logInScreen.dart';
+import 'package:global/screens/splashScreen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
+import 'package:global/Shared/customWidgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterOTPScreen extends StatefulWidget {
@@ -239,7 +239,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
         "Services__c": service,
         "Refered_by__c": widget.reference,
         "Occupation__c": widget.occupation,
-        "Company": "FintechFilings"
+        "Company": "global"
       },
       options: Options(
           followRedirects: false,

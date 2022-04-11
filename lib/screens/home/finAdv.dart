@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
+import 'package:global/Shared/customWidgets.dart';
+import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'dart:math' as math;
 
 class FinAdv extends StatefulWidget {

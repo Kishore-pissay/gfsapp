@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/screens/auth/logInScreen.dart';
-import 'package:fintechfilings/screens/home/fileUploadResponse.dart';
-import 'package:fintechfilings/screens/home/payment/paymentScreen.dart';
+import 'package:global/Shared/customWidgets.dart';
+import 'package:global/screens/auth/logInScreen.dart';
+import 'package:global/screens/home/fileUploadResponse.dart';
+import 'package:global/screens/home/payment/paymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:math' as math;

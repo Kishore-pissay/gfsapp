@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fintechfilings/Shared/colors.dart';
+import 'package:global/Shared/colors.dart';
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override

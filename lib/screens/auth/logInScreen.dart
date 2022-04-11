@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/customTextField.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/model/loginModelClass.dart';
-import 'package:fintechfilings/screens/auth/forgotEmailScreen.dart';
-import 'package:fintechfilings/screens/home/mainScreen.dart';
+import 'package:global/Shared/customTextField.dart';
+import 'package:global/Shared/customWidgets.dart';
+import 'package:global/model/loginModelClass.dart';
+import 'package:global/screens/auth/forgotEmailScreen.dart';
+import 'package:global/screens/home/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {

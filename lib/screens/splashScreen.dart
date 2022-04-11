@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fintechfilings/Shared/customWidgets.dart';
-import 'package:fintechfilings/screens/auth/logInScreen.dart';
-import 'package:fintechfilings/screens/auth/registerScreen.dart';
+import 'package:global/Shared/customWidgets.dart';
+import 'package:global/screens/auth/logInScreen.dart';
+import 'package:global/screens/auth/registerScreen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
