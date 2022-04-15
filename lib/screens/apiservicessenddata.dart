@@ -55,6 +55,8 @@ class ApiService {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader:
                 'Bearer ${sharedPreferences.getString(StorageValues.accessToken)}',
+            HttpHeaders.accessControlRequestHeadersHeader:
+                true, // add this line cors policy
             //"LeadId": id, // lead id
             //"Profession": regFor,
 

@@ -140,6 +140,8 @@ class _EWalletScreenState extends State<EWalletScreen> {
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader:
+                true, // add this line cors policy
             'leadid': prefs.getString(StorageValues.leadId),
           }),
     );

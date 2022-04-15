@@ -183,7 +183,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   Future<void> verifyOtp() async {
     EasyLoading.show(
         maskType: EasyLoadingMaskType.black,
-        status: "Verifying OTP...",
+        status: "Verifying OTPS...",
         indicator: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Colors.white),
         ));
@@ -191,7 +191,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
     String? instanceUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString(StorageValues.accessToken);
-    instanceUrl = prefs.getString(StorageValues.instanceUrl);
+    //instanceUrl = prefs.getString(StorageValues.instanceUrl);
+    instanceUrl = "https://globalfinancialservices2--devorg.my.salesforce.com";
 
     Dio dio = Dio();
     final response = await dio.post(
@@ -202,6 +203,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader:
+                true, // add this line cors policy
             'emailid': widget.email,
             "otp": _otpController.text,
           }),

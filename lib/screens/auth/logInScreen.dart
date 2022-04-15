@@ -31,6 +31,9 @@ class _LogInScreenState extends State<LogInScreen> {
     String? accessToken;
     String? instanceUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    //accessToken =
+    // "00D0p0000000O08!AQcAQB5UJFRt6QbpN5n.n7FQfRyKpId78ub.CdXM2wBorvwaRrwVLW9SLKuU7hbA5xWGbxv5tFY2xAFAXw82fzaidmOUFo5n";
+    //instanceUrl = "https://globalfinancialservices2--devorg.my.salesforce.com";
     accessToken = prefs.getString(StorageValues.accessToken);
     instanceUrl = prefs.getString(StorageValues.instanceUrl);
     Dio dio = Dio();
@@ -42,6 +45,15 @@ class _LogInScreenState extends State<LogInScreen> {
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader: true,
+            HttpHeaders.accessControlRequestMethodHeader: true,
+            HttpHeaders.accessControlAllowOriginHeader: true,
+            HttpHeaders.accessControlAllowCredentialsHeader: true,
+            HttpHeaders.accessControlAllowHeadersHeader: true,
+            HttpHeaders.accessControlAllowMethodsHeader: true,
+            HttpHeaders.accessControlExposeHeadersHeader: true,
+            HttpHeaders.accessControlMaxAgeHeader:
+                true, // add this line cors policy
             'password': _passwordController.text,
             'emailid': _emailController.text,
           }),

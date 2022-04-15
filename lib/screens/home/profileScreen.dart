@@ -47,7 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           validateStatus: (status) => true,
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
-            HttpHeaders.authorizationHeader: 'Bearer $accessToken'
+            HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader:
+                true, // add this line cors policy
           }),
     );
     print(response.statusCode);

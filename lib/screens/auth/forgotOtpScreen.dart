@@ -107,6 +107,15 @@ class _ForgotOTPScreenState extends State<ForgotOTPScreen> {
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader: true,
+            HttpHeaders.accessControlRequestMethodHeader: true,
+            HttpHeaders.accessControlAllowOriginHeader: true,
+            HttpHeaders.accessControlAllowCredentialsHeader: true,
+            HttpHeaders.accessControlAllowHeadersHeader: true,
+            HttpHeaders.accessControlAllowMethodsHeader: true,
+            HttpHeaders.accessControlExposeHeadersHeader: true,
+            HttpHeaders.accessControlMaxAgeHeader:
+                true, // add this line cors policy
             'emailid': widget.email,
             'otp': _otpController.text,
             'password': _pController.text,

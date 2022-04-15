@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> sendOTP() async {
     EasyLoading.show(
         maskType: EasyLoadingMaskType.black,
-        status: "Sending OTP...",
+        status: "Sending OTPS...",
         indicator: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Colors.white),
         ));
@@ -74,7 +74,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String? instanceUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString("accessToken");
-    instanceUrl = prefs.getString("instanceUrl");
+    //instanceUrl = prefs.getString("instanceUrl");
+    instanceUrl = "https://globalfinancialservices2--devorg.my.salesforce.com";
     print(accessToken);
     print(_emailController.text);
     print(_passwordController.text);
@@ -87,6 +88,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           headers: {
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+            HttpHeaders.accessControlRequestHeadersHeader: true,
+            HttpHeaders.accessControlRequestMethodHeader: true,
+            HttpHeaders.accessControlAllowOriginHeader: true,
+            HttpHeaders.accessControlAllowCredentialsHeader: true,
+            HttpHeaders.accessControlAllowHeadersHeader: true,
+            HttpHeaders.accessControlAllowMethodsHeader: true,
+            HttpHeaders.accessControlExposeHeadersHeader: true,
+            HttpHeaders.accessControlMaxAgeHeader: true,
+
+            // add this line cors policy
             'emailid': _emailController.text,
           }),
     );

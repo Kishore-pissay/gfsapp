@@ -346,6 +346,8 @@ class _LoanDocumentUploadWidgetState extends State<LoanDocumentUploadWidget> {
               data: base64Image,
               options: Options(headers: {
                 HttpHeaders.acceptHeader: 'application/json',
+                HttpHeaders.accessControlRequestHeadersHeader:
+                    true, // add this line cors policy
                 HttpHeaders.authorizationHeader:
                     'Bearer ${sharedPreferences.getString(StorageValues.accessToken)}',
                 "parentid": id,

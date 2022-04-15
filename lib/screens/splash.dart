@@ -114,8 +114,11 @@ class _SplashState extends State<Splash> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(StorageValues.accessToken,
         '00D5g00000642pa!ARMAQN6jMt6VcxL30lIubnyj2e5J7ZGf0rMEHJi_FCSspvluJvlYy5KtcBySKsWWMYwBJbLuR36rVaY80gwKNOoHWbx7xMnH');
+    //prefs.setString(StorageValues.instanceUrl,
+    //'https://globalfinancialservices2.my.salesforce.com');
     prefs.setString(StorageValues.instanceUrl,
-        'https://globalfinancialservices2.my.salesforce.com');
+        'https://globalfinancialservices2--devorg.my.salesforce.com');
+
     //  prefs.setString(StorageValues.accessToken, auth[0].accessToken!);
     // prefs.setString(StorageValues.instanceUrl, auth[0].instanceUrl!);
     //     if (prefs.getString(StorageValues.instanceUrl) != null &&

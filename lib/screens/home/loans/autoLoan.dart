@@ -396,6 +396,8 @@ class _AutoLoanDocumentUploadWidgetState
             HttpHeaders.acceptHeader: 'application/json',
             HttpHeaders.authorizationHeader:
                 'Bearer ${sharedPreferences.getString(StorageValues.accessToken)}',
+            HttpHeaders.accessControlRequestHeadersHeader:
+                true, // add this line cors policy
             //"leadId": id, // lead id
             //"profession": widget
             //    .selectedprofession, // sallary / bussiness radio button selection
